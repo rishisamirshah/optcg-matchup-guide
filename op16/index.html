@@ -1,0 +1,67 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OP-16 leader guides</title>
+<style>
+:root { --bg:#0d1117; --fg:#c9d1d9; --muted:#8b949e; --accent:#58a6ff;
+        --good:#3fb950; --ok:#58a6ff; --mid:#d29922; --bad:#f85149;
+        --border:#30363d; --card-bg:#161b22; }
+* { box-sizing:border-box }
+body { background:var(--bg); color:var(--fg);
+       font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,sans-serif;
+       margin:0; padding:18px; max-width:1100px; margin:0 auto; line-height:1.55 }
+a { color:var(--accent) }
+h1 { font-size:24px; margin:0 0 8px; display:flex; align-items:center; gap:14px }
+h1 img { width:60px; border-radius:6px; box-shadow:0 2px 8px rgba(0,0,0,0.4) }
+h2 { font-size:20px; margin:28px 0 8px; padding-bottom:6px; border-bottom:1px solid var(--border) }
+h3 { font-size:16px; margin:18px 0 6px; color:var(--accent) }
+.deck-tag { background:var(--card-bg); border:1px solid var(--border); border-radius:6px;
+             padding:10px 14px; margin-bottom:14px; font-size:14px }
+.deck-tag .one-liner { color:var(--accent); font-weight:600 }
+.matchup { background:var(--card-bg); border:1px solid var(--border); border-radius:8px;
+            padding:14px 18px; margin:14px 0 }
+.mu-h { display:flex; align-items:center; gap:12px; margin-bottom:10px;
+         padding-bottom:8px; border-bottom:1px solid var(--border) }
+.mu-h img { width:42px; border-radius:4px }
+.mu-h .name { font-size:17px; font-weight:600 }
+.mu-h .verdict { margin-left:auto; padding:3px 12px; border-radius:14px; font-size:12px; font-weight:600 }
+.verdict-Favored { background:rgba(63,185,80,0.18); color:var(--good) }
+.verdict-Unfavored { background:rgba(248,81,73,0.18); color:var(--bad) }
+.verdict-Even { background:rgba(88,166,255,0.18); color:var(--ok) }
+.verdict-Insufficient { background:rgba(139,148,158,0.18); color:var(--muted) }
+.wr-line { font-size:13px; color:var(--muted); margin-bottom:8px }
+.wr-good { color:var(--good); font-weight:600 }
+.wr-bad { color:var(--bad); font-weight:600 }
+.section { margin:12px 0 }
+.section-title { font-size:12px; text-transform:uppercase; letter-spacing:0.05em;
+                   color:var(--muted); margin-bottom:4px }
+.text { font-size:14px }
+ul.signs { margin:6px 0 0 20px; padding:0; font-size:13.5px }
+ul.signs li { margin:3px 0 }
+.turn-table { width:100%; border-collapse:collapse; margin:8px 0; font-size:13px }
+.turn-table th { text-align:left; background:#1c2128; color:var(--muted);
+                   padding:4px 8px; font-size:11px; text-transform:uppercase }
+.turn-table td { padding:6px 8px; border-bottom:1px solid #21262d; vertical-align:top }
+.turn-table .turn-n { color:var(--accent); font-weight:600; width:40px }
+.turn-table .phase { width:80px; color:var(--muted); font-size:11px; text-transform:uppercase }
+.turn-table .cards { font-family:monospace; font-size:10.5px; color:var(--muted) }
+.card-pill { display:inline-block; padding:1px 4px; background:#1c2128; border-radius:3px;
+              margin-right:3px; color:var(--accent) }
+.mistakes { background:#3a2c1a; border-left:3px solid #d9b676;
+             padding:8px 12px; border-radius:4px; font-size:13px; margin-top:8px }
+.mistakes-h { font-weight:600; color:#d9b676; margin-bottom:4px }
+.nav { background:var(--card-bg); border:1px solid var(--border); border-radius:6px;
+        padding:10px 14px; margin-bottom:18px; font-size:13px }
+.nav a { margin-right:14px; text-decoration:none }
+.champion-deck { background:#162616; border:1px solid #2d4a2d; border-radius:6px;
+                  padding:8px 14px; margin:8px 0; font-size:12px }
+.champion-deck h4 { margin:0 0 4px; color:var(--good); font-size:13px }
+.champion-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(60px,1fr));
+                   gap:4px; margin-top:8px }
+.champion-grid .c { position:relative; aspect-ratio:5/7 }
+.champion-grid .c img { width:100%; height:100%; object-fit:cover; border-radius:3px }
+.champion-grid .c .q { position:absolute; top:2px; left:2px; background:rgba(13,17,23,0.9);
+                         color:var(--accent); border:1px solid var(--accent); padding:0 4px;
+                         border-radius:2px; font-size:10px; font-weight:600 }
+@media (max-width:700px) { body { padding:12px } }
+</style>
+</head><body><div class="nav"><a href="../op16.html">Full meta data viewer</a><a href="../index.html">Ace V9 guide (OP-15 era)</a></div><h1>OP-16 leader guides — V9 behavioral framing</h1><div class="deck-tag">Each guide built from 2 days of sim data (W21 / 6,277 OP16 games / 2,550 unique decks with W/L). Behavioral framing — observed pro % beats hypothetical advice. Verifier passes 0 errors on each.</div><h2>Leaders</h2><div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:12px"><a href="OP12-061.html" style="text-decoration:none"><div style="background:var(--card-bg); border:1px solid var(--border); border-radius:8px; padding:12px; display:flex; gap:12px; align-items:center"><img src="../cards/OP12-061.png" style="width:60px; border-radius:5px" loading="lazy" alt="OP12-061"><div><div style="font-weight:600">Donquixote Rosinante (061)</div><div style="font-size:11px; color:var(--muted)">OP12-061</div><div style="font-size:12px; margin-top:4px; color:var(--accent)">Purple/Yellow Trafalgar Law toolbox leader with 4 life and 5000 power. Leader pa</div></div></div></a><a href="OP13-002.html" style="text-decoration:none"><div style="background:var(--card-bg); border:1px solid var(--border); border-radius:8px; padding:12px; display:flex; gap:12px; align-items:center"><img src="../cards/OP13-002.png" style="width:60px; border-radius:5px" loading="lazy" alt="OP13-002"><div><div style="font-weight:600">Portgas.D.Ace (002)</div><div style="font-size:11px; color:var(--muted)">OP13-002</div><div style="font-size:12px; margin-top:4px; color:var(--accent)">Blue/Red Whitebeard Ace deck built around a 3-life 6000-power leader that walls </div></div></div></a><a href="OP16-001.html" style="text-decoration:none"><div style="background:var(--card-bg); border:1px solid var(--border); border-radius:8px; padding:12px; display:flex; gap:12px; align-items:center"><img src="../cards/OP16-001.png" style="width:60px; border-radius:5px" loading="lazy" alt="OP16-001"><div><div style="font-weight:600">Portgas.D.Ace (001)</div><div style="font-size:11px; color:var(--muted)">OP16-001</div><div style="font-size:12px; margin-top:4px; color:var(--accent)">Red Whitebeard Pirates aggro leader with 5 life and 5000 power. Leader effect gr</div></div></div></a><a href="OP16-022.html" style="text-decoration:none"><div style="background:var(--card-bg); border:1px solid var(--border); border-radius:8px; padding:12px; display:flex; gap:12px; align-items:center"><img src="../cards/OP16-022.png" style="width:60px; border-radius:5px" loading="lazy" alt="OP16-022"><div><div style="font-weight:600">Monkey D. Luffy (OP16-022)</div><div style="font-size:11px; color:var(--muted)">OP16-022</div><div style="font-size:12px; margin-top:4px; color:var(--accent)">Green/Blue Impel Down leader with 4 life and 5000 power, built around the [Once </div></div></div></a><a href="OP16-041.html" style="text-decoration:none"><div style="background:var(--card-bg); border:1px solid var(--border); border-radius:8px; padding:12px; display:flex; gap:12px; align-items:center"><img src="../cards/OP16-041.png" style="width:60px; border-radius:5px" loading="lazy" alt="OP16-041"><div><div style="font-weight:600">Buggy (OP16-041)</div><div style="font-size:11px; color:var(--muted)">OP16-041</div><div style="font-size:12px; margin-top:4px; color:var(--accent)">Blue Impel Down swarm leader with 5 life and 5000 power. Leader effect [Once Per</div></div></div></a><a href="OP16-060.html" style="text-decoration:none"><div style="background:var(--card-bg); border:1px solid var(--border); border-radius:8px; padding:12px; display:flex; gap:12px; align-items:center"><img src="../cards/OP16-060.png" style="width:60px; border-radius:5px" loading="lazy" alt="OP16-060"><div><div style="font-weight:600">Sengoku</div><div style="font-size:11px; color:var(--muted)">OP16-060</div><div style="font-size:12px; margin-top:4px; color:var(--accent)">Purple Admiral-toolbox leader with 5 life and 5000 power. Leader effect: [Activa</div></div></div></a><a href="OP16-079.html" style="text-decoration:none"><div style="background:var(--card-bg); border:1px solid var(--border); border-radius:8px; padding:12px; display:flex; gap:12px; align-items:center"><img src="../cards/OP16-079.png" style="width:60px; border-radius:5px" loading="lazy" alt="OP16-079"><div><div style="font-weight:600">Yamato (079)</div><div style="font-size:11px; color:var(--muted)">OP16-079</div><div style="font-size:12px; margin-top:4px; color:var(--accent)">Black mono-color Land of Wano leader with 5 life and 5000 power, built around th</div></div></div></a><a href="OP16-080.html" style="text-decoration:none"><div style="background:var(--card-bg); border:1px solid var(--border); border-radius:8px; padding:12px; display:flex; gap:12px; align-items:center"><img src="../cards/OP16-080.png" style="width:60px; border-radius:5px" loading="lazy" alt="OP16-080"><div><div style="font-weight:600">Marshall.D.Teach</div><div style="font-size:11px; color:var(--muted)">OP16-080</div><div style="font-size:12px; margin-top:4px; color:var(--accent)">Black/Yellow Blackbeard Pirates leader with 4 life and 5000 power, built around </div></div></div></a></div></body></html>
