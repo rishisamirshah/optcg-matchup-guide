@@ -104,8 +104,13 @@ table.curve tr.row-key .cv-t{color:#3fb950;font-weight:800}
 <header class="top">
   <h1>How sorathecat plays Ace</h1>
   <div class="sub">Turn-by-turn 1-to-1 imitation guide derived from 91 OP15-era ranked replays. Climbed 1215 → 3674 Elo.</div>
-  <div class="sub" style="color:#3fb950;margin-top:6px"><b>v3 — every number verified against actual replay logs.</b> Card costs cross-checked against card_db. Frequencies + Ace swing powers recomputed via verify_sora_playbook.py + extract_ace_swings.py.</div>
-  <div class="sub" style="color:#d29922;margin-top:4px;font-size:12px">📐 <b>Ace swing power notation:</b> "Ace 7000 (15×)" = the power value that appeared in 15 actual game logs. Numbers are post-opp-effect (so in mirror, sora's 7000 may show as 5000 after opp's -2k). DON attached to LEADER releases at end of turn — so Ace's power resets each turn unless re-attached.</div>
+  <div class="sub" style="color:#3fb950;margin-top:6px"><b>v4 — every number verified against actual replay logs + decompiled simulator rules.</b> Card costs from card_db. Frequencies/swing-powers via verify_sora_playbook.py + extract_ace_swings.py. Game mechanics cross-checked against <code>notes/rules_truth.md</code> + <code>notes/rules_core.md</code>.</div>
+  <div class="sub" style="color:#d29922;margin-top:4px;font-size:12px">📐 <b>Verified mechanics (from <code>decompiled/GameplayLogicScript.cs</code>):</b><br>
+  • <b>Tie rule:</b> attacker wins on tie (<code>:26407</code>, operator is <code>&gt;=</code>).<br>
+  • <b>DON refresh:</b> at turn start, ALL attached DON (leader + characters) returns to cost area and becomes active (<code>PlayerUntap</code>, <code>:28796</code>). So per-turn DON budget = previous total + 2 (or +1 on T1 going 1st).<br>
+  • <b>Going 1st T1:</b> skips card draw, draws 1 DON only.<br>
+  • <b>Attached DON power:</b> +1000 each (rested or active state irrelevant for power).<br>
+  • <b>"Ace 7000 (15×)" notation:</b> the power value that appeared in 15 actual game logs, post-any opp effects. In mirror, sora's 7000 swing may show as 5000 after opp's -2k.</div>
   <div class="head-stats">
     <div class="stat"><b>91</b><span>OP15 games</span></div>
     <div class="stat" style="color:#3fb950"><b>59%</b><span>Overall WR (54-37)</span></div>
