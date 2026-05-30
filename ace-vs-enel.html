@@ -1,0 +1,494 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ace vs Purple Enel — how to actually play it</title>
+<style>
+:root{
+  --bg:#08090d; --panel:#10131a; --panel2:#161b22; --line:#262d38;
+  --tx:#e9eef5; --dim:#9aa4b2; --faint:#5c6675;
+  --gold:#f2c94c; --gold2:#d8a92a; --blk:#c9d1d9; --grn:#3fb950; --red:#e5484d; --blue:#58a6ff; --pur:#bc8cff;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--tx);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  max-width:960px;margin:0 auto;padding:14px;font-size:15px;line-height:1.55;
+  -webkit-text-size-adjust:100%}
+h2{font-size:19px;font-weight:800;color:#fff;margin:32px 0 4px;letter-spacing:-.3px}
+h2 .ic{color:var(--gold)}
+h3{font-size:15px;font-weight:700;color:var(--gold);margin:18px 0 6px}
+p{margin:8px 0}
+a{color:var(--blue)}
+.sub{color:var(--dim);font-size:13px;margin:0 0 10px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;margin:14px 0}
+
+/* hero */
+.hero{background:linear-gradient(135deg,#1a0c14 0%,#10131a 55%,#0c0e13 100%);
+  border:1px solid #4a2a3c;border-radius:18px;padding:20px;margin-bottom:8px;
+  display:grid;grid-template-columns:auto auto 1fr;gap:16px;align-items:center}
+.hero-art{width:118px;border-radius:12px;display:block;box-shadow:0 8px 30px rgba(0,0,0,.6);
+  border:1px solid #4a2a3c;background:#0c0f14}
+.hero-vs{color:var(--faint);font-weight:900;font-size:20px;font-style:italic;text-align:center}
+.hero-body{min-width:0}
+.hero .badges{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.bdg{font-size:12px;font-weight:800;padding:4px 11px;border-radius:20px;letter-spacing:.3px}
+.bdg.blk{background:#0d0d0d;color:#e9eef5;border:1px solid #3a3a3a}
+.bdg.blu{background:rgba(88,166,255,.13);color:var(--blue);border:1px solid #234a73}
+.bdg.life{background:rgba(229,72,77,.14);color:#ff8a8d;border:1px solid #5a2326}
+.bdg.pwr{background:rgba(242,201,76,.13);color:var(--gold);border:1px solid #5a4d1c}
+.hero h1{font-size:30px;font-weight:900;color:#fff;margin:2px 0 0;letter-spacing:-1px;font-style:italic;line-height:1.1}
+.hero .who{color:var(--gold);font-weight:800;font-size:15px;font-style:italic;margin-bottom:8px}
+.hero .one{font-size:14px;color:#dbe2ea;line-height:1.6}
+@media(max-width:620px){
+  .hero{grid-template-columns:auto auto auto;justify-content:center;text-align:center}
+  .hero-art{width:92px}
+  .hero-body{grid-column:1/-1}
+  .hero .badges{justify-content:center}
+  .hero h1{font-size:25px}
+}
+
+/* caveat banner */
+.caveat{background:rgba(216,169,42,.09);border:1px solid #5a4d1c;border-left:4px solid var(--gold);
+  border-radius:8px;padding:11px 14px;margin:10px 0 4px;font-size:13px;color:#e7d9a6}
+.caveat b{color:#ffe69a}
+.caveat .big{display:block;font-size:14px;font-weight:800;color:#ffe69a;margin-bottom:3px}
+.caveat .wrk{display:flex;gap:14px;flex-wrap:wrap;margin-top:7px}
+.caveat .wrk span{font-size:12.5px;color:#cdbf8e}
+.caveat .wrk b{font-size:14px}
+
+/* lists */
+ul{margin:8px 0;padding-left:20px}
+li{margin:7px 0}
+.tag{font-weight:800;color:#fff}
+.good{color:var(--grn);font-weight:800}
+.bad{color:var(--red);font-weight:800}
+.lead{font-size:14.5px;color:#dbe2ea;line-height:1.62}
+
+/* key-number callout */
+.kn{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:14px 0}
+.knc{background:var(--panel2);border:1px solid var(--line);border-radius:11px;padding:13px 14px}
+.knc .v{font-size:22px;font-weight:900;color:#fff;letter-spacing:-.5px}
+.knc .v.g{color:var(--grn)} .knc .v.r{color:var(--red)} .knc .v.y{color:var(--gold)}
+.knc .l{font-size:12px;color:var(--dim);line-height:1.4;margin-top:3px}
+
+/* engine cards */
+.eng{display:grid;gap:10px}
+.engpart{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.engpart h4{margin:0 0 5px;font-size:14px;color:var(--gold);font-weight:800}
+.engpart p{margin:0;font-size:13.5px;color:#d4dbe4}
+
+/* commit / hold split */
+.ch{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}
+.chcol{border-radius:12px;padding:13px 15px;border:1px solid var(--line)}
+.chcol.hold{background:rgba(63,185,80,.06);border-color:#1f4a2b}
+.chcol.commit{background:rgba(229,72,77,.06);border-color:#5a2326}
+.chcol h4{margin:0 0 6px;font-size:14px;font-weight:800}
+.chcol.hold h4{color:#5bd16a} .chcol.commit h4{color:#ff8a8d}
+.chcol ul{padding-left:18px;margin:6px 0 0} .chcol li{font-size:13px;margin:6px 0;color:#d4dbe4}
+@media(max-width:520px){.ch{grid-template-columns:1fr}}
+
+/* math line */
+.math{font-family:ui-monospace,Menlo,monospace;font-size:12.5px;background:rgba(0,0,0,.32);
+  border-left:3px solid var(--gold2);border-radius:6px;padding:8px 11px;margin:8px 0;color:#e3e9f1;line-height:1.6}
+.math .f{color:var(--red);font-weight:700} .math .h{color:var(--grn);font-weight:700}
+
+/* inline card chips (image thumbnail + name, with tooltip) */
+.chip{display:inline-flex;align-items:center;gap:5px;vertical-align:middle;
+  background:#161b22;border:1px solid #30363d;border-radius:6px;
+  padding:1px 7px 1px 2px;margin:1px 1px;cursor:help;line-height:1.2;white-space:nowrap}
+.chip-img{width:20px;height:28px;object-fit:cover;border-radius:3px;display:block;flex:0 0 auto;background:#0c0f14}
+.chip-nm{color:#ffe07a;font-weight:600;font-size:.92em}
+.chip.chip-txt{padding:1px 7px}
+.chip:hover{border-color:var(--gold)}
+
+/* seat toggle */
+.seatwrap{display:flex;gap:8px;margin:14px 0 2px}
+.seatbtn{flex:1;background:var(--panel2);border:1px solid var(--line);color:var(--dim);
+  font-weight:800;font-size:14px;padding:10px;border-radius:9px;cursor:pointer;text-align:center}
+.seatbtn.on{background:rgba(242,201,76,.13);color:var(--gold);border-color:#5a4d1c}
+.seatbtn .wr{display:block;font-size:11px;font-weight:700;color:var(--faint);margin-top:1px}
+.seatbtn.on .wr{color:var(--gold2)}
+.seatpane{display:none}
+.seatpane.on{display:block}
+
+/* per-turn cards */
+.turns{display:grid;gap:10px;margin-top:10px}
+.turn{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:0;overflow:hidden}
+.turn .th{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;padding:11px 14px;background:#171327;border-bottom:1px solid var(--line)}
+.turn .tn{font-weight:900;color:#fff;font-size:15px;background:#2a2148;border-radius:7px;padding:2px 9px}
+.turn .don{font-weight:800;color:var(--gold);font-size:12.5px;white-space:nowrap}
+.turn .lf{color:#ff9da0;font-size:12.5px;font-weight:700;white-space:nowrap}
+.turn .pivot{font-size:11px;font-weight:800;color:#cdb6ff;background:#1c1730;border-radius:11px;padding:2px 9px}
+.turn .rows{padding:6px 14px 12px}
+.trow{display:grid;grid-template-columns:96px 1fr;gap:10px;padding:7px 0;border-bottom:1px solid #1b212b;font-size:13px}
+.trow:last-child{border-bottom:0}
+.trow .rl{color:var(--faint);font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;padding-top:2px}
+.trow .rv{color:#d4dbe4;line-height:1.5}
+.trow .rv .good{color:var(--grn)} .trow .rv .bad{color:var(--red)}
+.trow.key .rl{color:var(--gold)}
+.trow.key .rv{color:#fff}
+@media(max-width:520px){
+  .trow{grid-template-columns:1fr;gap:1px}
+  .trow .rl{padding-top:0}
+}
+
+/* cheat sheet table */
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table.cs{border-collapse:collapse;width:100%;font-size:13px;margin-top:6px}
+table.cs th{background:#171c25;color:var(--dim);text-align:left;padding:8px 9px;font-size:11px;text-transform:uppercase;letter-spacing:.4px;border-bottom:2px solid var(--line)}
+table.cs td{padding:8px 9px;border-bottom:1px solid #1b212b;vertical-align:top;line-height:1.45}
+table.cs tr:nth-child(even) td{background:#0e1117}
+table.cs .pw{font-weight:800;color:#fff;white-space:nowrap}
+table.cs .no{color:var(--grn);font-weight:700} table.cs .yes{color:var(--red);font-weight:700}
+
+.foot{color:var(--faint);font-size:11.5px;margin:26px 0 8px;line-height:1.5;border-top:1px solid var(--line);padding-top:12px}
+
+/* tooltip */
+#cardtip{position:fixed;z-index:9999;max-width:340px;background:#0c0f15;border:1px solid var(--gold);
+  border-radius:9px;padding:10px 12px;box-shadow:0 10px 40px rgba(0,0,0,.75);display:none;
+  font-size:12.5px;line-height:1.5}
+#cardtip .ct-row{display:flex;gap:10px}
+#cardtip .ct-art{width:78px;height:109px;object-fit:cover;border-radius:6px;flex:0 0 auto;display:none}
+#cardtip .ct-txt{min-width:0}
+#cardtip .ct-n{font-weight:800;color:var(--gold);margin-bottom:1px}
+#cardtip .ct-m{font-size:11px;color:var(--dim);margin-bottom:6px}
+#cardtip .ct-e{color:#e3e9f1}
+@media(max-width:560px){#cardtip{max-width:90vw}#cardtip .ct-art{width:64px;height:90px}}
+</style></head><body>
+
+<div class="hero">
+<img class="hero-art" src="cards/OP13-002.png" alt="Portgas D. Ace OP13-002" onerror="this.style.opacity=.25">
+<div class="hero-vs">vs</div>
+<img class="hero-art" src="cards/OP15-058.png" alt="Enel OP15-058" onerror="this.style.opacity=.25">
+<div class="hero-body">
+<div class="badges">
+<span class="bdg blu">BLUE / ACE</span>
+<span class="bdg pwr">6000 LEADER</span>
+<span class="bdg life">LIFE 3</span>
+<span class="bdg blk">vs Purple Enel</span>
+</div>
+<div class="who">Portgas.D.Ace · OP13-002</div>
+<h1>Ace vs Purple Enel</h1>
+<div class="who" style="color:#dbe2ea;font-weight:600;font-style:normal;font-size:14px">how to actually play it</div>
+<div class="one">Your characters are <b>supposed</b> to die here. Ace wins through the leader and <span class="chip hovcard" data-name="Edward.Newgate (SP) (OP13-042)" data-meta="Character · 12000 power · cost 10 · Blocker · Blue" data-eff="[Blocker]. [On Play] Draw 2, trash 1, then give up to 2 rested DON to your Leader and up to 2 to 1 of your Characters."><img class="chip-img" src="cards/OP13-042.png" loading="lazy" alt="" onerror="this.remove()"><span class="chip-nm">Newgate SP</span></span>, not by holding a board. Spend bodies and +1000 counters freely, bank your +2000s and Ace's −2000 for the one card Enel has that beats your wall: <span class="chip hovcard" data-name="Enel (OP15-118)" data-meta="Character · 8000 base (+2000 while Enel ≤6 DON = 10000) · cost 6 · effect-immune · Purple" data-eff="While Enel has 6 or fewer DON (always, by his rule): +2000 power and cannot be affected by your opponent's effects. Removal-immune all game; only a power debuff or attack-disable touches it."><img class="chip-img" src="cards/OP15-118.png" loading="lazy" alt="" onerror="this.remove()"><span class="chip-nm">Enel OP15-118</span></span>.</div>
+</div>
+</div>
+
+<div class="caveat">
+<span class="big">Honest win rate: this is a losing matchup. Play it tight.</span>
+Across <b>4,930</b> ranked Ace-vs-Purple-Enel games the deck wins <b>~40% overall</b>. The seat matters more than anything: going first is roughly even, going second is the bad side.
+<div class="wrk">
+<span><b>4,930</b> games</span>
+<span><b style="color:#9aa4b2">~40%</b> overall</span>
+<span><b class="" style="color:#5bd16a">~48%</b> going first</span>
+<span><b style="color:#ff8a8d">~31%</b> going second</span>
+</div>
+</div>
+
+<h2><span class="ic">&#9670;</span> Why you're losing (it's not the removal)</h2>
+<p class="lead">Enel's rest / freeze / KO / bounce is loud, but it is <b>not</b> your loss condition. The players who <b>win</b> eat <b>more</b> removal than the players who lose. You lose because you play as if the board matters — rebuilding it, protecting it, spending counters to defend it — when Ace wins through the <b>leader and Newgate</b>, not the board.</p>
+
+<div class="kn">
+<div class="knc"><div class="v g">+0.6</div><div class="l">Characters KO'd by Enel per game: winners <b>4.2</b> vs losers <b>3.6</b>. Winners lose MORE bodies.</div></div>
+<div class="knc"><div class="v g">12 vs 10</div><div class="l">Bodies deployed per game (median): won <b>12</b>, lost <b>10</b>. Winners deploy more AND lose more of them.</div></div>
+<div class="knc"><div class="v y">10.9 vs 10.0</div><div class="l">Removal + lock actions Enel landed per game: won <b>10.9</b>, lost <b>10.0</b>. If removal were the problem these would flip.</div></div>
+<div class="knc"><div class="v y">+11 pts</div><div class="l">Newgate SP in <b>86%</b> of wins vs <b>75%</b> of losses — a bigger swing than any removal stat.</div></div>
+</div>
+
+<p class="lead">Your characters do three jobs, then they're allowed to die:</p>
+<div class="eng">
+<div class="engpart"><h4>1 — Counter fuel</h4><p><span class="chip hovcard" data-name="Otama (OP13-043)" data-meta="Character · cost 1 · +2000 counter · Blue"><img class="chip-img" src="cards/OP13-043.png" loading="lazy" alt="" onerror="this.remove()"><span class="chip-nm">Otama</span></span> +2000 and <span class="chip hovcard" data-name="Uta (ST23-001)" data-meta="Character · cost 6 · +2000 counter · Blue"><img class="chip-img" src="cards/ST23-001.png" loading="lazy" alt="" onerror="this.remove()"><span class="chip-nm">Uta</span></span> +2000 plus the +1000s (<span class="chip hovcard" data-name="Jozu (OP08-047)" data-meta="Character · cost 6 · 7000 · +1000 counter · Blue (bounce body)"><img class="chip-img" src="cards/OP08-047.png" loading="lazy" alt="" onerror="this.remove()"><span class="chip-nm">Jozu</span></span>, <span class="chip hovcard" data-name="Atmos (OP08-040)" data-meta="Character · cost 4 · +1000 counter · Blue"><img class="chip-img" src="cards/OP08-040.png" loading="lazy" alt="" onerror="this.remove()"><span class="chip-nm">Atmos</span></span>, <span class="chip hovcard" data-name="Monkey.D.Garp (OP13-016)" data-meta="Character · cost 1 · +1000 counter · searcher · Blue"><img class="chip-img" src="cards/OP13-016.png" loading="lazy" alt="" onerror="this.remove()"><span class="chip-nm">Garp</span></span>, <span class="chip hovcard" data-name="Izo (ST22-002)" data-meta="Character · cost 1 · +1000 counter · Blue"><img class="chip-img" src="cards/ST22-002.png" loading="lazy" alt="" onerror="this.remove()"><span class="chip-nm">Izo</span></span>) are worth more in hand than on board. Otama and Jozu are the two most-used counters in the matchup. A card you "kept on board" is a counter you didn't get to use.</p></div>
+<div class="engpart"><h4>2 — The Newgate blocker (the one body that must stick)</h4><p><span class="chip hovcard" data-name="Edward.Newgate (SP) (OP13-042)" data-meta="Character · 12000 power · cost 10 · Blocker · Blue" data-eff="[Blocker]. [On Play] Draw 2, trash 1, then give up to 2 rested DON to your Leader and up to 2 to 1 of your Characters."><img class="chip-img" src="cards/OP13-042.png" loading="lazy" alt="" onerror="this.remove()"><span class="chip-nm">Newgate SP</span></span> — 12000 blocker, Draw 2 + Trash 1, attaches 2 DON to your leader. In 86% of wins, 75% of losses. It is the answer to the OP15-118 wall, not a removal answer. Block the 10000 swing with it and it <b>survives</b> (12000 &gt; 10000).</p></div>
+<div class="engpart"><h4>3 — Marco, a one-shot blocker + on-KO Draw 2</h4><p><span class="chip hovcard" data-name="Marco (Alternate Art) (PRB02-008)" data-meta="Character · 6000 · cost 4 · Blocker · draws 2 on KO · Blue"><img class="chip-img" src="cards/PRB02-008.png" loading="lazy" alt="" onerror="this.remove()"><span class="chip-nm">Marco</span></span> is the single most rest/froze/disabled target Enel has — Enel <b>wants</b> to lock your blocker. That's fine. Marco blocking one swing and drawing 2 when it dies is the card doing its whole job.</p></div>
+</div>
+
+<h3>The OP15-118 trap you can't solve with removal</h3>
+<p>Enel's <span class="chip hovcard" data-name="Enel (OP15-118)" data-meta="Character · 8000 base +2000 = 10000 · cost 6 · effect-immune · Purple" data-eff="While Enel has 6 or fewer DON (always, by his rule): +2000 power and cannot be affected by your opponent's effects."><img class="chip-img" src="cards/OP15-118.png" loading="lazy" alt="" onerror="this.remove()"><span class="chip-nm">OP15-118</span></span> (and its twin OP15-060) get <b>+2000 and effect-immunity while Enel has ≤6 DON</b>. Enel is hard-capped at 6 DON <b>forever</b>, so that's always on. It sits at <b>10000 effective</b> and swings every turn from T4. You <b>cannot</b> Jozu-bounce it, deck-bottom it, or KO it — every removal attempt fizzles. Two things still work because neither <em>removes</em> it: Ace's leader <b>−2000</b> combat debuff (drops it to 8000 for that attack) and <span class="chip hovcard" data-name="Boa Hancock (SP) (OP07-051)" data-meta="Character · 8000 · cost 6 · Blue" data-eff="[On Play] lock 1 enemy character (cannot attack until end of opponent's next turn) + bottom-deck a 1-cost. The lock isn't removal, so it works on OP15-118."><img class="chip-img" src="cards/OP07-051.png" loading="lazy" alt="" onerror="this.remove()"><span class="chip-nm">Hancock's</span></span> lock (can't attack a turn). The answer to the biggest threat is also not removal — it's a blocker, a turn of lock, or stacked counters with the −2000.</p>
+
+<h3>Commit freely vs hold for the wave</h3>
+<div class="ch">
+<div class="chcol hold"><h4>HOLD (keep in hand)</h4><ul>
+<li>Every <b>+2000</b> counter (Otama, Uta) until the OP15-118 wave at T4–T7. Stacked, they're your only cards that beat a 10000 swing.</li>
+<li>Ace's <b>−2000</b> leader effect, strictly for the 10000 swing. Do NOT spend it on a 4000–5000 character swing — those fail Ace 6000 for free.</li>
+<li><b>Newgate SP</b> — but land it by T5–T6. Don't hold it dead.</li>
+</ul></div>
+<div class="chcol commit"><h4>COMMIT (spend, expect to lose it)</h4><ul>
+<li><b>+1000</b> counters (Jozu, Atmos, Garp, Izo, Yamato-as-counter) on the <b>6000 swings only</b>.</li>
+<li>Any tempo body (Hancock, Yamato, Zoro) once — then let Enel remove it. <b>Don't redeploy the same role twice</b> into removal.</li>
+<li>Your <b>leader</b>, every turn. Ace 6000 (+1–2 DON) into the 5000 Enel leader is a free hit Enel can't out-scale.</li>
+</ul></div>
+</div>
+
+<div class="math">6000 Enel-leader swing: Ace 6000 + any +1000 = 7000 &gt; 6000 = <span class="h">FAIL (stopped)</span><br>
+4000–5000 swing: under 6000 = <span class="h">fails for free</span> — counter nothing, −2000 nothing<br>
+10000 OP15-118: −2000 → 8000, then Ace 6000 + Otama +2000 + Atmos +1000 = 9000 &gt; 8000 = <span class="h">FAIL</span><br>
+&nbsp;&nbsp;…or no −2000: Ace 6000 + Otama +2000 + Uta +2000 = 10000 <span class="bad">ties = HITS</span> → add Jozu +1000 = 11000 = <span class="h">FAIL</span><br>
+&nbsp;&nbsp;…or just block it with Newgate: 12000 &gt; 10000, <span class="h">Newgate survives</span></div>
+
+<h2><span class="ic">&#9670;</span> Yamato — deploy it, don't guard it</h2>
+<p class="lead"><b>Hard-deploy <span class="chip hovcard" data-name="Yamato (OP13-054)" data-meta="Character · 6000 · cost 5 · +1000 counter · Blue" data-eff="[On Play] If you have 3 or less Life cards, draw 2, then give up to 1 rested DON to your Leader."><img class="chip-img" src="cards/OP13-054.png" loading="lazy" alt="" onerror="this.remove()"><span class="chip-nm">Yamato</span></span> almost every time.</b> Ace starts at LIFE 3 and is never above 3, so its "3-or-less life → Draw 2 + DON attach" condition <b>always</b> fires. In won games 100% of deploys happened at ≤3 life, clustering hard on <b>T3 (797 of 1,172 deploys)</b>. Attach the DON to Ace for a 7000 leader swing.</p>
+
+<div class="kn">
+<div class="knc"><div class="v r">41.5%</div><div class="l">Win rate when you spend a counter to <b>guard</b> a deployed Yamato (n=556).</div></div>
+<div class="knc"><div class="v g">44.3%</div><div class="l">Win rate when you let it die — <b>higher</b> (n=759). Paying to save it correlates with losing.</div></div>
+<div class="knc"><div class="v y">~62%</div><div class="l">Attacks at Yamato come in at 5000–6000. A 5000 swing fails into its 6000 for free; a 6000 swing is a fine trade.</div></div>
+</div>
+
+<p>Yamato is <b>fuel and a flexible counter, not a centerpiece</b> — played in 51% of wins, 46% of losses, and used as a +1000 in 1,749 won-game swings. The one thing to never do: spend a counter to <b>guard</b> a deployed Yamato. You already cashed the Draw 2 + DON when you played it. Most attacks at it are cheap; let them resolve. Let it die happily to the OP15-118 swing — that 10000 is being spent on your body, not your leader.</p>
+<div class="panel" style="font-size:13px;color:#cfd6df"><b style="color:#ff8a8d">Over-guard, illustrated.</b> One lost game saw the player guard a deployed Yamato three times — Jozu on a T3 5000, Garp on another T3 5000, Kingdew on a T5 6000 — burning three counters. Both 5000 swings would have failed into Yamato's 6000 anyway. Then a 9000 swing KO'd it through the block. Three counters spent, Yamato dead, game lost.</div>
+<p class="sub"><b>Decision rule:</b> (1) Deploy by T3 for the Draw 2 + DON. (2) Hold as a +1000 only if your hand is flush. (3) Never burn a counter to guard it. (4) Let it eat the OP15-118 swing.</p>
+
+<h2><span class="ic">&#9670;</span> Zoro — buff first, swing second, never into the wall</h2>
+<p class="lead"><span class="chip hovcard" data-name="Roronoa Zoro (EB04-007)" data-meta="Character · 9000 · cost 7 · NO counter · Blue" data-eff="[On Play] Your Leader gets +2000 until end of opponent's next turn. [Activate: Main] gains [Rush: Character] if the opponent has a character with 8000+ power."><img class="chip-img" src="cards/EB04-007.png" loading="lazy" alt="" onerror="this.remove()"><span class="chip-nm">Zoro</span></span> has <b>no counter value</b> — you can't pitch it. Its job is the <b>+2000 leader buff</b>: Ace 6000 → 8000, swinging 9000–12000 with DON. That's repeatable pressure Enel can't out-scale (stuck at 6 DON). The 9000 body is a fine swing at any target <b>≤9000</b> — but <b>never the 10000 wall.</b></p>
+
+<div class="kn">
+<div class="knc"><div class="v g">81%</div><div class="l">Zoro-body HIT rate into a non-wall character in won games (413 HIT / 98 FAIL).</div></div>
+<div class="knc"><div class="v y">57%</div><div class="l">Into the 5000 Enel leader — softer than it looks, they pump it to 6000 and counter.</div></div>
+<div class="knc"><div class="v r">15%</div><div class="l">Body into OP15-118 in <b>lost</b> games. 9000 &lt; 10000 is an auto-fail and they hold counters for it.</div></div>
+</div>
+
+<p>The trap: a raw 9000 body into OP15-118 fails on its face (9000 &lt; 10000), and they hold counters for exactly this swing. One lost game pumped Zoro to <b>12000</b> into OP15-118 — the opponent dropped two +2000 counters: 10000 + 2000 + 2000 = 14000 &gt; 12000 = dead body for nothing. To kill OP15-118, use <b>Ace's −2000</b> debuff on defense, not Zoro: drop it to 8000, then Ace 6000 + Otama +2000 + Uta +2000 = 10000 &gt; 8000 = fail. Keep Zoro's job as pressure.</p>
+<p class="sub"><b>Decision rule:</b> (1) Default = play for the +2000 leader buff. (2) Swing the 9000 body only at a character ≤9000 or the Enel leader. (3) Never into OP15-118's 10000. (4) Kill the wall with the −2000 + stacked counters on defense, not with Zoro.</p>
+
+<h2><span class="ic">&#9670;</span> Your curve & missing your big drop</h2>
+<p class="lead">Your deck has <b>no real 8-drop.</b> The top end is exactly three cards, and <span class="chip hovcard" data-name="Edward.Newgate (SP) (OP13-042)" data-meta="Character · 12000 · cost 10 · Blocker · Blue" data-eff="[On Play] Draw 2, trash 1, 12000 Blocker, attach 2 DON to Leader + 1 char."><img class="chip-img" src="cards/OP13-042.png" loading="lazy" alt="" onerror="this.remove()"><span class="chip-nm">Newgate SP</span></span> in <b>86% of wins</b> is the single biggest number in the matchup. When you draw it on time you win; when you brick it you don't lose on the spot — you grind.</p>
+
+<div class="scroll"><table class="cs">
+<thead><tr><th>Top-end card</th><th>Cost</th><th>What it does</th><th>In % of WINS</th></tr></thead>
+<tbody>
+<tr><td class="pw"><span class="chip hovcard" data-name="Boa Hancock (SP) (OP07-051)" data-meta="Character · 8000 · cost 6 · Blue" data-eff="[On Play] lock 1 enemy character for two turns + bottom-deck a 1-cost."><img class="chip-img" src="cards/OP07-051.png" loading="lazy" alt="" onerror="this.remove()"><span class="chip-nm">Hancock SP</span></span></td><td>6</td><td>Lock 1 enemy character 2 turns + bottom-deck a 1-cost</td><td class="pw">70% <span style="color:var(--faint);font-weight:600">(vs 59% loss)</span></td></tr>
+<tr><td class="pw"><span class="chip hovcard" data-name="Roronoa Zoro (EB04-007)" data-meta="Character · 9000 · cost 7 · Blue" data-eff="[On Play] Leader +2000 this & next turn; self-Rush vs an 8000+ board."><img class="chip-img" src="cards/EB04-007.png" loading="lazy" alt="" onerror="this.remove()"><span class="chip-nm">Zoro</span></span></td><td>7</td><td>Leader +2000 this+next turn; can self-Rush vs an 8000+ board</td><td class="pw">54%</td></tr>
+<tr><td class="pw"><span class="chip hovcard" data-name="Edward.Newgate (SP) (OP13-042)" data-meta="Character · 12000 · cost 10 · Blocker · Blue" data-eff="[On Play] Draw 2, 12000 Blocker, attach 2 DON to Leader + 1 char."><img class="chip-img" src="cards/OP13-042.png" loading="lazy" alt="" onerror="this.remove()"><span class="chip-nm">Newgate SP</span></span></td><td>10</td><td>Draw 2, 12000 Blocker, attach 2 DON to Leader + 1 char</td><td class="pw">86% <span style="color:var(--faint);font-weight:600">(vs 75% loss)</span></td></tr>
+</tbody></table></div>
+
+<h3>Why it's winnable without the bomb: your 6000 leader is a wall</h3>
+<p>Ace's leader is <b>6000</b>; Enel's is <b>5000</b>, and Enel is hard-capped at 6 DON, so he can never out-scale you with DON. His most common attack is leader + 1 DON = <b>6000</b> — ties Ace's 6000 and HITS via the ≥ rule, but it's cheap to deny (one +1000) or fine to take on purpose to bank life. His 1-cost characters (Ohm, Shura, Satori, all base 2000) pumped to 4000–5000 <b>fail into your 6000 for free</b> — never counter those. The only thing that beats your wall hard is OP15-118 — and OP15-118 is answerable. That's why you can lose Newgate and stay in the game.</p>
+
+<h3>Newgate timing — race it onto the board by T5–T6</h3>
+<p>Winners cluster Newgate on <b>T4–T5</b> (most common winning turn: T5, 774 games). Losers skew later or never land it behind enough counters. Holding it for a "better" turn is a top-3 losing mistake — by T7 a winning Ace sits at 1 life going first while a losing Ace has already bled to 0.</p>
+
+<h3>When you miss Hancock AND Newgate — the grind plan</h3>
+<ul>
+<li><span class="tag">Lean on the 6000 wall. Counter nothing under 6000.</span> Every 2000–5000 swing fails on its own. Burning a counter (or the −2000) on a 4000 swing is the #2 losing mistake.</li>
+<li><span class="tag">Ration counters for OP15-118 only.</span> Winners and losers play similar counters — the difference is winners still <b>have</b> them when OP15-118 swings. Counter starvation is how you lose, not the card itself: in losses, every OP15-118 hit went through with <b>zero</b> counters spent.</li>
+<li><span class="tag">Use the −2000 on the right target, every time.</span> Save it for the 10000 swing. 10000 − 2000 = 8000, then a 2k + a 1k = 9000 &gt; 8000 holds. A single 2k only reaches 8000 = ties = still HITS.</li>
+<li><span class="tag">Bank life on purpose, don't bleed it.</span> Clearest signal in the data. At T5 winners sit at <b>2 life</b> (1,126 games); losers are collapsing (827 at 1, 227 already at 0). Take a clean 6000 hit to go 3→2 rather than dump a counter you'll need.</li>
+<li><span class="tag">Clock with Zoro and late Hancock.</span> You're racing a 6000 leader into a 5000 leader that can't scale — survive the one card (OP15-118) that can, until Newgate's Draw 2 refills you.</li>
+</ul>
+
+<h2><span class="ic">&#9670;</span> Turn-by-turn</h2>
+<p class="sub">The skill of the matchup is the <b>TAKE rate</b>: losers eat more chip than winners (T2 26% vs 21%, T6 11% vs 7%) because they don't trust the 4000–5000 swings to bounce off Ace for free. Counter/block rates are nearly identical between winners and losers — winners just don't bleed life they didn't have to. Pick your seat:</p>
+
+<div class="seatwrap">
+<div class="seatbtn on" id="b1" onclick="seat(1)">Going FIRST <span class="wr">~48% — your best shot</span></div>
+<div class="seatbtn" id="b2" onclick="seat(2)">Going SECOND <span class="wr">~31% — the bad side</span></div>
+</div>
+
+<!-- FIRST -->
+<div class="seatpane on" id="p1">
+<div class="turns">
+
+<div class="turn">
+<div class="th"><span class="tn">T2</span><span class="don">DON 3</span><span class="lf">target life 3</span></div>
+<div class="rows">
+<div class="trow"><div class="rl">Play</div><div class="rv">A 1-cost searcher — <span class="chip hovcard" data-name="Monkey.D.Garp (OP13-016)" data-meta="Character · cost 1 · searcher · +1000 counter"><img class="chip-img" src="cards/OP13-016.png" loading="lazy" alt="" onerror="this.remove()"><span class="chip-nm">Garp</span></span> or <span class="chip hovcard" data-name="Izo (ST22-002)" data-meta="Character · cost 1 · +1000 counter"><img class="chip-img" src="cards/ST22-002.png" loading="lazy" alt="" onerror="this.remove()"><span class="chip-nm">Izo</span></span> — to dig for your payoffs, or any 3-cost body.</div></div>
+<div class="trow"><div class="rl">Swing</div><div class="rv">Ace 6000 into their 5000 leader — clean hit, 1 damage.</div></div>
+<div class="trow"><div class="rl">Your life</div><div class="rv">3. Winners counter ~40% here, take only 21%; losers take 26%.</div></div>
+<div class="trow"><div class="rl">When they attack</div><div class="rv">1–2 swings, all at your leader. 4000–5000 = <span class="good">take, fails for free</span>. 6000 (leader +1 DON or pumped 1-cost) = one +1000 → 7000 &gt; 6000.</div></div>
+<div class="trow key"><div class="rl">Key card</div><div class="rv"><span class="chip hovcard" data-name="Jozu (OP08-047)" data-meta="Character · cost 6 · 7000 · +1000 counter"><img class="chip-img" src="cards/OP08-047.png" loading="lazy" alt="" onerror="this.remove()"><span class="chip-nm">Jozu</span></span> — your +1000 workhorse. <span class="bad">Do NOT</span> burn Otama/Uta here.</div></div>
+</div></div>
+
+<div class="turn">
+<div class="th"><span class="tn">T3</span><span class="don">DON 5</span><span class="lf">target life 3</span></div>
+<div class="rows">
+<div class="trow"><div class="rl">Play</div><div class="rv"><span class="chip hovcard" data-name="Yamato (OP13-054)" data-meta="Character · 6000 · cost 5 · draws 2 at ≤3 life"><img class="chip-img" src="cards/OP13-054.png" loading="lazy" alt="" onerror="this.remove()"><span class="chip-nm">Yamato</span></span> (draws 2 + attaches DON), or Jozu to bounce a 1-cost. OP15-118 lands but is summoning-sick — no attack yet.</div></div>
+<div class="trow"><div class="rl">Swing</div><div class="rv">Ace +1 DON = 7000 into their 5000 leader, clean. Deploy a 4-cost.</div></div>
+<div class="trow"><div class="rl">Your life</div><div class="rv">3. Winners counter 47%, take 4%. Staying at 3 through T3 is what won games do.</div></div>
+<div class="trow"><div class="rl">When they attack</div><div class="rv">The Ohm 2000 swing is fishing for its draw — <span class="good">take it, fails free</span>. 6000 leader → +1000 (Jozu/Atmos).</div></div>
+<div class="trow key"><div class="rl">Key card</div><div class="rv">Yamato — draw-2 + DON engine at low life. <span class="bad">Don't</span> try to bounce OP15-118; use Hancock's lock instead.</div></div>
+</div></div>
+
+<div class="turn">
+<div class="th"><span class="tn">T4</span><span class="don">DON 7</span><span class="lf">target life 2</span><span class="pivot">PIVOT TURN</span></div>
+<div class="rows">
+<div class="trow"><div class="rl">Play</div><div class="rv"><span class="chip hovcard" data-name="Boa Hancock (SP) (OP07-051)" data-meta="Character · 8000 · cost 6" data-eff="[On Play] lock 1 character + bottom-deck a 1-cost."><img class="chip-img" src="cards/OP07-051.png" loading="lazy" alt="" onerror="this.remove()"><span class="chip-nm">Hancock SP</span></span> — point the lock at OP15-118 so it can't swing next turn. Else a 7-cost, or <span class="chip hovcard" data-name="Marco (PRB02-008)" data-meta="Character · 6000 · cost 4 · Blocker · draws 2 on KO"><img class="chip-img" src="cards/PRB02-008.png" loading="lazy" alt="" onerror="this.remove()"><span class="chip-nm">Marco</span></span> blocker.</div></div>
+<div class="trow"><div class="rl">Swing</div><div class="rv">Ace + DON for damage.</div></div>
+<div class="trow"><div class="rl">Your life</div><div class="rv">2. Winners counter 51% (highest of the game), take 3%. <b>At 2 after T4 = on the winning track</b> (losers bleed to 1: 352 games, 0: 28).</div></div>
+<div class="trow"><div class="rl">When they attack</div><div class="rv"><b>OP15-118 starts swinging at 10000.</b> 6000 leader → +1000. The 10000: <span class="chip hovcard" data-name="Portgas.D.Ace (OP13-002)" data-meta="Leader · 6000 · LIFE 3" data-eff="[On Opponent's Attack][Once Per Turn] trash 1 → give a Leader/Character −2000 this battle."><img class="chip-img" src="cards/OP13-002.png" loading="lazy" alt="" onerror="this.remove()"><span class="chip-nm">Ace −2000</span></span> → 8000, then Ace 6000 + Otama +2000 + Atmos +1000 = 9000 &gt; 8000.</div></div>
+<div class="trow key"><div class="rl">Key card</div><div class="rv">Ace's own −2000 (point it at OP15-118), plus Hancock's lock.</div></div>
+</div></div>
+
+<div class="turn">
+<div class="th"><span class="tn">T5</span><span class="don">DON 9</span><span class="lf">target life 2</span></div>
+<div class="rows">
+<div class="trow"><div class="rl">Play</div><div class="rv"><span class="chip hovcard" data-name="Roronoa Zoro (EB04-007)" data-meta="Character · 9000 · cost 7" data-eff="[On Play] Leader +2000."><img class="chip-img" src="cards/EB04-007.png" loading="lazy" alt="" onerror="this.remove()"><span class="chip-nm">Zoro</span></span> (Ace → 8000, start racing) or Yamato again. Swing Ace +2 DON = 8000 to force a counter out of them.</div></div>
+<div class="trow"><div class="rl">Swing</div><div class="rv">Ace 8000+ at their leader — race now, don't just defend.</div></div>
+<div class="trow"><div class="rl">Your life</div><div class="rv">2. Counter 43% / block 29% / take 5% in wins. Losers take 8% — that extra 3% loses games.</div></div>
+<div class="trow"><div class="rl">When they attack</div><div class="rv">10000 OP15-118 → −2000 → 8000, then Ace 6000 + Otama +2000 = ties (still HITS) → add Jozu +1000 = 9000. <span class="chip hovcard" data-name="Marco (PRB02-008)" data-meta="Character · 6000 · Blocker · draws 2 on KO"><img class="chip-img" src="cards/PRB02-008.png" loading="lazy" alt="" onerror="this.remove()"><span class="chip-nm">Marco</span></span> comes online — block one big swing.</div></div>
+<div class="trow key"><div class="rl">Key card</div><div class="rv">Zoro (defense → race) or Marco blocker.</div></div>
+</div></div>
+
+<div class="turn">
+<div class="th"><span class="tn">T6</span><span class="don">DON 10</span><span class="lf">target life 2</span><span class="pivot">DEFINING SWING</span></div>
+<div class="rows">
+<div class="trow"><div class="rl">Play</div><div class="rv"><b><span class="chip hovcard" data-name="Edward.Newgate (SP) (OP13-042)" data-meta="Character · 12000 · cost 10 · Blocker" data-eff="[On Play] Draw 2, trash 1, attach 2 DON to Leader + 1 char."><img class="chip-img" src="cards/OP13-042.png" loading="lazy" alt="" onerror="this.remove()"><span class="chip-nm">Newgate SP</span></span> the moment you have it.</b> Blocks the 10000 and survives; juices your leader to 8000–10000.</div></div>
+<div class="trow"><div class="rl">Swing</div><div class="rv">Leader 8000–10000 (Newgate DON) — push damage, force counters.</div></div>
+<div class="trow"><div class="rl">Your life</div><div class="rv">2. Won games sit at 2 (808). <b>487 losers are already at 0 after T6</b> vs 157 winners. Staying off 0–1 is the win condition.</div></div>
+<div class="trow"><div class="rl">When they attack</div><div class="rv"><span class="good">Block the 10000 OP15-118 with Newgate</span> (12000 &gt; 10000, lives) — free defense. 6000 leader → Yamato +1000. Second 10000 after Newgate rests → −2000 → 8000, then Otama +2000 + Uta +2000 = 10000 &gt; 8000.</div></div>
+<div class="trow key"><div class="rl">Key card</div><div class="rv">Newgate SP — the recurring 12000 blocker.</div></div>
+</div></div>
+
+<div class="turn">
+<div class="th"><span class="tn">T7</span><span class="don">DON 10</span><span class="lf">target life 1</span></div>
+<div class="rows">
+<div class="trow"><div class="rl">Play</div><div class="rv">If they're at ≤1 life with no blocker, <b>rush <span class="chip hovcard" data-name="Gol.D.Roger (OP09-118)" data-meta="Character · 13000 · cost 10 · Rush"><img class="chip-img" src="cards/OP09-118.png" loading="lazy" alt="" onerror="this.remove()"><span class="chip-nm">Gol.D.Roger</span></span></b> — wins on the spot. Else play Newgate if you haven't, or swing 9000+ and deploy a closer.</div></div>
+<div class="trow"><div class="rl">Swing</div><div class="rv">Leader 9000+ — close, don't stabilize.</div></div>
+<div class="trow"><div class="rl">Your life</div><div class="rv">1. Counter 41% / block 25% / take 12%. Goal: close before they out-chip you.</div></div>
+<div class="trow"><div class="rl">When they attack</div><div class="rv">10000 OP15-118 → −2000 → 8000, then Otama +2000 + Uta +2000 = 10000 &gt; 8000, or block with Newgate. Watch the OP15-060-style finisher at 10000–16000 — block it or have banked chip earlier.</div></div>
+<div class="trow key"><div class="rl">Key card</div><div class="rv"><span class="chip hovcard" data-name="Otama (OP13-043)" data-meta="Character · cost 1 · +2000 counter"><img class="chip-img" src="cards/OP13-043.png" loading="lazy" alt="" onerror="this.remove()"><span class="chip-nm">Otama</span></span> / <span class="chip hovcard" data-name="Uta (ST23-001)" data-meta="Character · cost 6 · +2000 counter"><img class="chip-img" src="cards/ST23-001.png" loading="lazy" alt="" onerror="this.remove()"><span class="chip-nm">Uta</span></span> — the +2000s you BANKED on T2–T3 — and Gol.D.Roger as the finisher.</div></div>
+</div></div>
+
+</div>
+</div>
+
+<!-- SECOND -->
+<div class="seatpane" id="p2">
+<div class="caveat" style="margin-top:0"><span class="big">Be honest: ~31% win rate. You start a DON behind and draw fewer counters early.</span>You can still win — the 931 won-second games show a clear pattern — but play tighter. You only get to eat ~2–3 hits before Newgate has to bail you out.</div>
+<div class="turns">
+
+<div class="turn">
+<div class="th"><span class="tn">T1</span><span class="don">DON 2</span><span class="lf">you draw</span></div>
+<div class="rows">
+<div class="trow"><div class="rl">Play</div><div class="rv">If you have <span class="chip hovcard" data-name="Monkey.D.Garp (OP13-016)" data-meta="Character · cost 1 · searcher · +1000 counter"><img class="chip-img" src="cards/OP13-016.png" loading="lazy" alt="" onerror="this.remove()"><span class="chip-nm">Garp</span></span>, play it and search a 3+ cost Whitebeard card. Otherwise pass — 2 DON has no good line.</div></div>
+<div class="trow"><div class="rl">Swing</div><div class="rv">None.</div></div>
+<div class="trow"><div class="rl">Your life</div><div class="rv">3. They drop a 1-cost, no attack.</div></div>
+<div class="trow"><div class="rl">When they attack</div><div class="rv">Nothing this turn. Hold everything.</div></div>
+<div class="trow key"><div class="rl">Key card</div><div class="rv">Garp — pre-set your T3–T5 plays.</div></div>
+</div></div>
+
+<div class="turn">
+<div class="th"><span class="tn">T2</span><span class="don">DON 4</span><span class="lf">them: 3 DON</span></div>
+<div class="rows">
+<div class="trow"><div class="rl">Play</div><div class="rv">A 3-cost body; swing Ace 6000 into their 5000 leader (ties, HITS for 1).</div></div>
+<div class="trow"><div class="rl">Swing</div><div class="rv">Ace 6000 at their leader.</div></div>
+<div class="trow"><div class="rl">Your life</div><div class="rv">3 → 2 is fine. Pros <b>take 40% here</b> going second (more than going first) — they refuse to burn a counter this early.</div></div>
+<div class="trow"><div class="rl">When they attack</div><div class="rv">1–2 at your leader (median 1). 6000 = take it, or plug only if you have a spare Jozu +1000. <span class="good">4000 = fails free</span>.</div></div>
+<div class="trow key"><div class="rl">Key card</div><div class="rv"><span class="chip hovcard" data-name="Jozu (OP08-047)" data-meta="Character · cost 6 · 7000 · +1000 counter"><img class="chip-img" src="cards/OP08-047.png" loading="lazy" alt="" onerror="this.remove()"><span class="chip-nm">Jozu</span></span>. <span class="bad">Don't</span> spend a +2000 here.</div></div>
+</div></div>
+
+<div class="turn">
+<div class="th"><span class="tn">T3</span><span class="don">DON 6</span><span class="lf">them: 5 DON</span></div>
+<div class="rows">
+<div class="trow"><div class="rl">Play</div><div class="rv">Jozu (bounce a 1-cost, leaves a 7000 wall) or <span class="chip hovcard" data-name="Yamato (OP13-054)" data-meta="Character · 6000 · cost 5 · draws 2 at ≤3 life"><img class="chip-img" src="cards/OP13-054.png" loading="lazy" alt="" onerror="this.remove()"><span class="chip-nm">Yamato</span></span> (Draw 2 + DON). Else a 5-cost + swing Ace +1 DON = 7000.</div></div>
+<div class="trow"><div class="rl">Swing</div><div class="rv">Ace 7000 into their 5000 leader.</div></div>
+<div class="trow"><div class="rl">Your life</div><div class="rv">2. Counter rate jumps to <b>51%</b> (highest of the early game), take only 12% — you can't start T4 at 1 life.</div></div>
+<div class="trow"><div class="rl">When they attack</div><div class="rv">Plug almost every 6000 swing with a +1000 (7000 &gt; 6000). Still never counter the 4000/2000 swings or Ohm's draw-poke.</div></div>
+<div class="trow key"><div class="rl">Key card</div><div class="rv">+1000s freely; <span class="bad">hoard</span> the +2000s (Otama, Uta) for the OP15-118 wave next turn.</div></div>
+</div></div>
+
+<div class="turn">
+<div class="th"><span class="tn">T4</span><span class="don">DON 8</span><span class="lf">them: 6 DON</span><span class="pivot">THE WAVE STARTS</span></div>
+<div class="rows">
+<div class="trow"><div class="rl">Play</div><div class="rv"><span class="chip hovcard" data-name="Boa Hancock (SP) (OP07-051)" data-meta="Character · 8000 · cost 6" data-eff="[On Play] lock 1 character."><img class="chip-img" src="cards/OP07-051.png" loading="lazy" alt="" onerror="this.remove()"><span class="chip-nm">Hancock SP</span></span> — lock OP15-118 from attacking (buys a full turn off the wave; the lock isn't removal so it works). Else a 6–7 cost threat.</div></div>
+<div class="trow"><div class="rl">Swing</div><div class="rv">Ace + DON; start swinging back.</div></div>
+<div class="trow"><div class="rl">Your life</div><div class="rv">2 → 1 acceptable. Counter 46%, take 22%. Top counter is now <b>Otama +2000</b> — spend it on the first OP15-118 swing, don't bank it.</div></div>
+<div class="trow"><div class="rl">When they attack</div><div class="rv"><b>OP15-118 swings 10000.</b> −2000 → 8000, then Ace 6000 + Otama +2000 + a +1000 = 9000 &gt; 8000. Can't afford it? <span class="good">Take it, drop to 1</span> — save your hand for the turn you can block it.</div></div>
+<div class="trow key"><div class="rl">Key card</div><div class="rv">Hancock's lock &gt; countering OP15-118 if you have it. Jozu can't bounce OP15-118.</div></div>
+</div></div>
+
+<div class="turn">
+<div class="th"><span class="tn">T5</span><span class="don">DON 10</span><span class="lf">them: 6 forever</span><span class="pivot">DROP NEWGATE</span></div>
+<div class="rows">
+<div class="trow"><div class="rl">Play</div><div class="rv"><b><span class="chip hovcard" data-name="Edward.Newgate (SP) (OP13-042)" data-meta="Character · 12000 · cost 10 · Blocker" data-eff="[On Play] Draw 2, attach 2 DON to Leader + 1 char."><img class="chip-img" src="cards/OP13-042.png" loading="lazy" alt="" onerror="this.remove()"><span class="chip-nm">Newgate SP</span></span> — PLAY IT.</b> Draw 2, a 12000 blocker that survives the 10000, 2 DON to push back. Now you <span class="good">block</span> instead of hand-countering.</div></div>
+<div class="trow"><div class="rl">Swing</div><div class="rv">Leader + Newgate DON for 8000–10000.</div></div>
+<div class="trow"><div class="rl">Your life</div><div class="rv">1–2. Counter <b>50%</b> (highest of game), take 18%. The whole plan: do not drop to 1 before Newgate is down.</div></div>
+<div class="trow"><div class="rl">When they attack</div><div class="rv">10000 OP15-118 → block with Newgate, or −2000 → 8000 then Otama +2000 + Uta +2000 = 10000 &gt; 8000. OP15-118 may swing your characters to clear blockers — protect Newgate.</div></div>
+<div class="trow key"><div class="rl">Key card</div><div class="rv">Newgate SP. <span style="color:#9aa4b2">Real lost game: no Newgate, took a 12000 + a 14000 on the same turn at 2 life = dead.</span></div></div>
+</div></div>
+
+<div class="turn">
+<div class="th"><span class="tn">T6</span><span class="don">DON 10</span><span class="lf">them: 6 DON</span></div>
+<div class="rows">
+<div class="trow"><div class="rl">Play</div><div class="rv">If you somehow haven't played Newgate, play it now. If they're at 0 with no blocker, rush <span class="chip hovcard" data-name="Gol.D.Roger (OP09-118)" data-meta="Character · 13000 · cost 10 · Rush"><img class="chip-img" src="cards/OP09-118.png" loading="lazy" alt="" onerror="this.remove()"><span class="chip-nm">Gol.D.Roger</span></span> — wins.</div></div>
+<div class="trow"><div class="rl">Swing</div><div class="rv">Stack threats; force them to spend their 6 DON defending instead of attacking.</div></div>
+<div class="trow"><div class="rl">Your life</div><div class="rv">1. Counter 39%, <b>block jumps to 19%</b> (Marco/Newgate eating swings), take 14%.</div></div>
+<div class="trow"><div class="rl">When they attack</div><div class="rv">They aim at Newgate / Hancock / Marco / Zoro to clear blockers. <span class="good">Block the 10000 with Newgate</span> (survives); counter 6000 leader swings with leftover +1000s.</div></div>
+<div class="trow key"><div class="rl">Key card</div><div class="rv">Marco / Newgate as recurring blockers; +2000s (Uta, Otama, Izo) for the big swings.</div></div>
+</div></div>
+
+<div class="turn">
+<div class="th"><span class="tn">T7+</span><span class="don">DON 10</span><span class="lf">them: 6 DON</span><span class="pivot">CLOSE IT</span></div>
+<div class="rows">
+<div class="trow"><div class="rl">Play</div><div class="rv">Rush <span class="chip hovcard" data-name="Gol.D.Roger (OP09-118)" data-meta="Character · 13000 · cost 10 · Rush"><img class="chip-img" src="cards/OP09-118.png" loading="lazy" alt="" onerror="this.remove()"><span class="chip-nm">Gol.D.Roger</span></span> if they're ≤1 with no blocker. Or <span class="chip hovcard" data-name="Roronoa Zoro (EB04-007)" data-meta="Character · 9000 · cost 7" data-eff="[On Play] Leader +2000."><img class="chip-img" src="cards/EB04-007.png" loading="lazy" alt="" onerror="this.remove()"><span class="chip-nm">Zoro</span></span> (Ace → 8000) and swing 10000+ for lethal.</div></div>
+<div class="trow"><div class="rl">Swing</div><div class="rv">Ace + DON for 8000–10000 every turn — they can't out-DON you (you're at 10, they're frozen at 6).</div></div>
+<div class="trow"><div class="rl">Your life</div><div class="rv">1. Every swing through is potential lethal. Counter 39%, <b>block 20% (highest of game)</b>.</div></div>
+<div class="trow"><div class="rl">When they attack</div><div class="rv">OP15-118 stacks DON to 14000–16000 to kill Newgate — block the big swings, counter the 6000 leader swings. 10000 → −2000 → 8000, then Otama +2000 + Uta +2000.</div></div>
+<div class="trow key"><div class="rl">Key card</div><div class="rv">Gol.D.Roger / Zoro to close; banked +2000s to survive.</div></div>
+</div></div>
+
+</div>
+</div>
+
+<h2><span class="ic">&#9670;</span> Cheat sheet</h2>
+<div class="scroll"><table class="cs">
+<thead><tr><th>Their swing</th><th>Hits Ace 6000?</th><th>Your answer</th></tr></thead>
+<tbody>
+<tr><td class="pw">Leader / 1-cost at 4000–5000</td><td class="no">No — fails free</td><td>Take nothing. Never counter, never −2000.</td></tr>
+<tr><td class="pw">Leader / 1-cost at 6000</td><td class="yes">Yes (tie)</td><td>One +1000 (Jozu/Atmos/Garp/Izo/Yamato): 6000 + 1000 = 7000 &gt; 6000.</td></tr>
+<tr><td class="pw">Holly / Reiju 8000–9000</td><td class="yes">Yes</td><td>−2000 debuff → 6000–7000, then a +1000 / +2000, or block.</td></tr>
+<tr><td class="pw">OP15-118 at 10000</td><td class="yes">Yes, hard</td><td>−2000 → 8000, then Otama +2000 + a +2000 = 10000 &gt; 8000; OR block with Newgate (12000 survives); OR Hancock-lock it.</td></tr>
+<tr><td class="pw">OP15-118 at 14000–16000 (DON-stacked)</td><td class="yes">Yes, hard</td><td>Take it if not lethal — too expensive to stop; save cards for the next one.</td></tr>
+</tbody></table></div>
+
+<h2><span class="ic">&#9670;</span> The rules that win this matchup</h2>
+<ul>
+<li><span class="tag">3 life, not 4.</span> Plan from 3 → 2 (hold through T4–T6) → 1 (T7).</li>
+<li><span class="tag">Never spend on a sub-6000 swing.</span> The 5000 leader and base-2000 1-costs fail into Ace 6000 for free. Losers waste counters here and have nothing for the 10000.</li>
+<li><span class="tag">Every 6000 swing = exactly one +1000.</span> Use your worst +1000 (Jozu, Atmos, Izo, Garp, Yamato-as-counter). Never a +2000 on a 6000.</li>
+<li><span class="tag">OP15-118's 10000 is the whole game.</span> Ties go to the attacker, so beat it, don't tie it. −2000 → 8000 then +2000 +1000, Hancock-lock, or Newgate block. Removal never works.</li>
+<li><span class="tag">Bank Otama &amp; Uta for T4–T7.</span> They exist to beat the 10000, not the 6000s.</li>
+<li><span class="tag">Land Newgate by T5–T6.</span> 86% of wins vs 75% of losses. Once it blocks the wave, your counters last and you out-grind the frozen 6-DON board.</li>
+</ul>
+
+<div class="foot">All behavior numbers from <b>ace_enel_stats.json</b> — 4,930 ranked Ace (OP13-002) vs Purple Enel (OP15-058) games (1,964 won / 2,966 lost, 39.8% overall), plus traced game lines. Card stats and effects are canonical (sim extraction). Win rates by seat (~48% first / ~31% second) are directional from the seat split; read the per-turn counter/block/take splits as direction, not gospel. OP15-118's +2000 / effect-immunity holds because Enel is hard-capped at 6 DON all game.</div>
+
+<div id="cardtip"><div class="ct-row"><img class="ct-art" src="" alt=""><div class="ct-txt"><div class="ct-n"></div><div class="ct-m"></div><div class="ct-e"></div></div></div></div>
+
+<script>
+function seat(n){
+  document.getElementById('p1').classList.toggle('on',n===1);
+  document.getElementById('p2').classList.toggle('on',n===2);
+  document.getElementById('b1').classList.toggle('on',n===1);
+  document.getElementById('b2').classList.toggle('on',n===2);
+}
+(function(){
+  var tip=document.getElementById('cardtip');
+  var art=tip.querySelector('.ct-art');
+  var n=tip.querySelector('.ct-n'), m=tip.querySelector('.ct-m'), e=tip.querySelector('.ct-e');
+  function codeFrom(name){ var mm=/\(([A-Z0-9]+-\d{3}|P-\d{3})\)\s*$/.exec(name||''); return mm?mm[1]:null; }
+  function show(el,ev){
+    n.textContent=el.dataset.name||''; m.textContent=el.dataset.meta||''; e.textContent=el.dataset.eff||'';
+    var code=codeFrom(el.dataset.name);
+    if(code){ art.src='cards/'+code+'.png'; art.style.display='block';
+      art.onerror=function(){art.style.display='none';}; }
+    else { art.style.display='none'; }
+    tip.style.display='block'; move(ev);
+  }
+  function move(ev){
+    var pad=14,w=tip.offsetWidth,h=tip.offsetHeight,vw=window.innerWidth,vh=window.innerHeight;
+    var x=ev.clientX+pad,y=ev.clientY+pad;
+    if(x+w>vw-8)x=ev.clientX-w-pad; if(x<8)x=8;
+    if(y+h>vh-8)y=ev.clientY-h-pad; if(y<8)y=8;
+    tip.style.left=x+'px'; tip.style.top=y+'px';
+  }
+  document.addEventListener('mouseover',function(ev){var el=ev.target.closest('.hovcard');if(el)show(el,ev);});
+  document.addEventListener('mousemove',function(ev){
+    if(tip.style.display==='block'){var el=ev.target.closest('.hovcard');if(el)move(ev);else tip.style.display='none';}
+  });
+  document.addEventListener('mouseout',function(ev){if(ev.target.closest('.hovcard'))tip.style.display='none';});
+  document.addEventListener('click',function(ev){
+    var el=ev.target.closest('.hovcard');
+    if(el){ show(el,{clientX:ev.clientX||window.innerWidth/2,clientY:ev.clientY||120}); ev.stopPropagation(); }
+    else { tip.style.display='none'; }
+  });
+})();
+</script>
+</body></html>
