@@ -1,649 +1,87 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nami — OP16 Tournament Sheet</title>
-<style>
-  :root {
-    --green: #1a7f37;
-    --green-bg: #d6f5dd;
-    --red: #b42318;
-    --red-bg: #fde4e1;
-    --amber: #8a5300;
-    --amber-bg: #fdf0d5;
-    --ink: #14161a;
-    --mut: #5b6470;
-    --line: #c7cdd6;
-    --line2: #e3e7ed;
-    --blue: #0b4f8a;
-    --yellow-accent: #e0a500;
-    --card: #ffffff;
-    --bg: #f4f6f9;
-  }
-  * { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  html, body { margin: 0; padding: 0; }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    color: var(--ink);
-    background: var(--bg);
-    font-size: 17px;
-    line-height: 1.35;
-    padding: 14px;
-    max-width: 1180px;
-    margin: 0 auto;
-  }
-
-  /* ---------- HEADER ---------- */
-  .hdr {
-    background: linear-gradient(100deg, #0b4f8a 0%, #1b6fb8 55%, #e0a500 160%);
-    color: #fff;
-    border-radius: 12px;
-    padding: 18px 22px;
-    margin-bottom: 16px;
-    box-shadow: 0 2px 6px rgba(0,0,0,.12);
-  }
-  .hdr h1 {
-    margin: 0;
-    font-size: 30px;
-    font-weight: 800;
-    letter-spacing: -0.4px;
-    line-height: 1.1;
-  }
-  .hdr .sub {
-    margin-top: 6px;
-    font-size: 16px;
-    font-weight: 600;
-    opacity: .95;
-  }
-  .hdr .ov {
-    margin-top: 10px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px 10px;
-    font-size: 14px;
-  }
-  .hdr .ov span {
-    background: rgba(255,255,255,.18);
-    border: 1px solid rgba(255,255,255,.30);
-    padding: 3px 10px;
-    border-radius: 999px;
-    font-weight: 700;
-    white-space: nowrap;
-  }
-  .verify {
-    display: inline-block;
-    background: var(--red-bg);
-    color: var(--red);
-    border: 1.5px solid var(--red);
-    border-radius: 6px;
-    padding: 2px 9px;
-    font-weight: 800;
-    font-size: 12.5px;
-    letter-spacing: .3px;
-    text-transform: uppercase;
-    margin-top: 10px;
-  }
-
-  /* ---------- SECTIONS ---------- */
-  section {
-    background: var(--card);
-    border: 1px solid var(--line);
-    border-radius: 12px;
-    padding: 14px 16px 16px;
-    margin-bottom: 16px;
-    box-shadow: 0 1px 3px rgba(0,0,0,.05);
-  }
-  h2 {
-    margin: 0 0 4px;
-    font-size: 21px;
-    font-weight: 800;
-    letter-spacing: -0.2px;
-    display: flex;
-    align-items: baseline;
-    gap: 10px;
-    border-bottom: 3px solid var(--blue);
-    padding-bottom: 6px;
-  }
-  h2 .num {
-    background: var(--blue);
-    color: #fff;
-    width: 27px; height: 27px;
-    border-radius: 7px;
-    font-size: 16px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    flex: none;
-  }
-  h2 .tag {
-    margin-left: auto;
-    font-size: 12.5px;
-    font-weight: 700;
-    color: var(--mut);
-    letter-spacing: .2px;
-  }
-  .lede { margin: 8px 0 12px; font-size: 15px; color: var(--mut); }
-  .lede b { color: var(--ink); }
-
-  /* ---------- CHANCE TABLE ---------- */
-  table { border-collapse: collapse; width: 100%; }
-  .chance th, .chance td {
-    padding: 7px 10px;
-    text-align: left;
-    border-bottom: 1px solid var(--line2);
-  }
-  .chance thead th {
-    position: sticky; top: 0;
-    background: #eef1f6;
-    font-size: 12.5px;
-    text-transform: uppercase;
-    letter-spacing: .4px;
-    color: var(--mut);
-    border-bottom: 2px solid var(--line);
-    white-space: nowrap;
-  }
-  .chance td.opp { font-weight: 700; font-size: 16px; }
-  .chance td.opp .code { display: block; font-size: 11.5px; color: var(--mut); font-weight: 600; }
-  .chance td.num { text-align: center; font-variant-numeric: tabular-nums; white-space: nowrap; }
-  .chance td.num .pct { font-weight: 800; font-size: 16.5px; }
-  .chance td.num .n { color: var(--mut); font-size: 12px; font-weight: 600; }
-  .chance td.num.dim .pct { color: var(--line); }
-  .chance tbody tr:nth-child(even) { background: #fafbfd; }
-  .chance tbody tr.mirror-row { background: var(--yellow-accent); }
-  .chance tbody tr.mirror-row td { background: #fff7df; font-weight: 700; }
-  .chance tbody tr.mirror-row td.opp { color: var(--amber); }
-
-  /* seat pick pill */
-  .seat {
-    display: inline-block;
-    font-weight: 800;
-    font-size: 13px;
-    padding: 3px 10px;
-    border-radius: 6px;
-    letter-spacing: .3px;
-    text-transform: uppercase;
-    white-space: nowrap;
-  }
-  .seat.first  { background: #e7eefc; color: #1d4ed8; border: 1.5px solid #1d4ed8; }
-  .seat.second { background: #ede7fb; color: #6d28d9; border: 1.5px solid #6d28d9; }
-  .seat.either { background: #eef1f6; color: #475467; border: 1.5px solid #98a2b3; }
-
-  /* favored color cue cell */
-  .cue {
-    text-align: center;
-    font-weight: 800;
-    font-size: 13px;
-    white-space: nowrap;
-    border-left: 5px solid transparent;
-  }
-  .cue.fav  { color: var(--green); border-left-color: var(--green); background: var(--green-bg); }
-  .cue.unfav{ color: var(--red);   border-left-color: var(--red);   background: var(--red-bg); }
-  .cue.even { color: var(--amber); border-left-color: var(--amber); background: var(--amber-bg); }
-
-  .rel { font-size: 11px; font-weight: 700; color: var(--mut); }
-  tr.thin td { opacity: .72; }
-  tr.thin td.opp { opacity: .85; }
-
-  .legend {
-    display: flex; flex-wrap: wrap; gap: 6px 16px;
-    margin-top: 10px; font-size: 12.5px; color: var(--mut);
-  }
-  .legend b { color: var(--ink); }
-  .chip { display: inline-block; width: 11px; height: 11px; border-radius: 3px; vertical-align: -1px; margin-right: 4px; }
-
-  /* ---------- MIRROR BOX ---------- */
-  .mirror { border: 2px solid var(--yellow-accent); }
-  .mirror h2 { border-bottom-color: var(--yellow-accent); }
-  .mirror h2 .num { background: var(--yellow-accent); }
-  .keybox {
-    background: var(--yellow-accent);
-    color: #3a2e00;
-    font-weight: 800;
-    font-size: 15px;
-    padding: 9px 14px;
-    border-radius: 8px;
-    margin-bottom: 12px;
-    display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px;
-  }
-  .keybox .big { font-size: 20px; letter-spacing: -.3px; }
-  .mhead {
-    font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: .4px;
-    color: var(--blue); margin: 14px 0 6px;
-  }
-  .plan { display: grid; grid-template-columns: 1fr; gap: 0; }
-  .step {
-    display: grid; grid-template-columns: 132px 1fr; gap: 12px;
-    padding: 9px 0; border-bottom: 1px dashed var(--line2);
-    align-items: start;
-  }
-  .step:last-child { border-bottom: none; }
-  .step .ph {
-    font-weight: 800; font-size: 13px; color: var(--blue);
-    text-transform: uppercase; letter-spacing: .2px; line-height: 1.25;
-  }
-  .step .bd { font-size: 15px; }
-  .step .bd .do { font-weight: 800; }
-  .step .bd .stat { display: block; margin-top: 2px; font-size: 12.5px; color: var(--mut); }
-
-  .pivot { counter-reset: piv; margin-top: 4px; }
-  .piv {
-    display: grid; grid-template-columns: 30px 1fr; gap: 10px;
-    padding: 8px 0; border-bottom: 1px dashed var(--line2); align-items: start;
-  }
-  .piv:last-child { border-bottom: none; }
-  .piv .n {
-    counter-increment: piv;
-    background: var(--blue); color: #fff; font-weight: 800;
-    width: 26px; height: 26px; border-radius: 50%;
-    display: inline-flex; align-items: center; justify-content: center;
-    font-size: 14px; flex: none;
-  }
-  .piv .n::before { content: counter(piv); }
-  .piv .d { font-weight: 700; font-size: 14.5px; }
-  .piv .d .stat { display: block; font-weight: 600; font-size: 12.5px; color: var(--mut); margin-top: 1px; }
-  .twocol { display: grid; grid-template-columns: 1fr 1fr; gap: 0 28px; }
-
-  /* ---------- CURVE ---------- */
-  .curve th, .curve td {
-    padding: 7px 9px; border-bottom: 1px solid var(--line2); text-align: left; vertical-align: top;
-  }
-  .curve thead th {
-    background: #eef1f6; font-size: 12px; text-transform: uppercase; letter-spacing: .3px;
-    color: var(--mut); border-bottom: 2px solid var(--line); white-space: nowrap;
-  }
-  .curve td.t { font-weight: 800; font-size: 15px; text-align: center; background: #f4f6f9; white-space: nowrap; }
-  .curve td.play { font-weight: 700; font-size: 14.5px; }
-  .curve td.play .code { font-size: 11px; color: var(--mut); font-weight: 600; }
-  .curve td.wr { text-align: center; font-variant-numeric: tabular-nums; font-weight: 700; white-space: nowrap; }
-  .curve td.wr .n { color: var(--mut); font-size: 11px; font-weight: 600; }
-  .curve .seathdr {
-    font-weight: 800; font-size: 15px; padding: 6px 9px; background: #e7eefc; color: var(--blue);
-    border-bottom: 2px solid var(--line);
-  }
-  .curve .seathdr.sec { background: #ede7fb; color: #6d28d9; }
-  .thinflag { color: var(--red); font-weight: 800; font-size: 10.5px; }
-
-  /* ---------- DECKLIST ---------- */
-  .deckwrap { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-  .deck th, .deck td { padding: 5px 8px; border-bottom: 1px solid var(--line2); text-align: left; }
-  .deck thead th { background: #eef1f6; font-size: 11.5px; text-transform: uppercase; letter-spacing: .3px; color: var(--mut); border-bottom: 2px solid var(--line); }
-  .deck td.q { font-weight: 800; text-align: center; font-size: 15px; width: 30px; }
-  .deck td.nm { font-weight: 700; font-size: 14px; }
-  .deck td.nm .code { font-size: 11px; color: var(--mut); font-weight: 600; }
-  .deck td.cc { text-align: center; font-variant-numeric: tabular-nums; font-size: 13px; white-space: nowrap; }
-  .deck tr.core td.q { color: var(--green); }
-  .deck tr.flex td.q { color: var(--amber); }
-  .deckhead { font-weight: 800; font-size: 15px; margin-bottom: 4px; display: flex; align-items: baseline; gap: 8px; }
-  .deckhead .lead { background: var(--blue); color: #fff; padding: 2px 9px; border-radius: 6px; font-size: 13px; }
-  .deckhead .tot { margin-left: auto; font-size: 13px; color: var(--mut); }
-  .techbox { margin-top: 14px; }
-  .techbox h3 { font-size: 13px; text-transform: uppercase; letter-spacing: .3px; color: var(--blue); margin: 0 0 6px; }
-  .techbox table { font-size: 13px; }
-  .techbox td, .techbox th { padding: 4px 8px; border-bottom: 1px solid var(--line2); }
-  .techbox thead th { background: #eef1f6; font-size: 11px; text-transform: uppercase; color: var(--mut); }
-  .techbox td.wrg { font-weight: 800; color: var(--green); text-align: center; }
-
-  .foot { font-size: 12px; color: var(--mut); margin-top: 8px; }
-  .foot ul { margin: 4px 0 0; padding-left: 18px; }
-  .foot li { margin-bottom: 2px; }
-
-  /* ---------- PRINT ---------- */
-  @media print {
-    body { background: #fff; padding: 0; font-size: 11.5px; }
-    section { box-shadow: none; break-inside: avoid; border-color: #999; }
-    .hdr { box-shadow: none; }
-    .hdr h1 { font-size: 22px; }
-    h2 { font-size: 16px; }
-    .chance th, .chance td { padding: 3px 6px; }
-    .chance td.opp { font-size: 12px; }
-    .chance td.num .pct { font-size: 12px; }
-    .curve td, .curve th { padding: 3px 5px; }
-    .deck td, .deck th { padding: 2px 5px; }
-    .chance thead th, .curve thead th { position: static; }
-    .nobreak { break-inside: avoid; }
-    a { color: inherit; text-decoration: none; }
-  }
-  @media (max-width: 720px) {
-    body { font-size: 16px; padding: 8px; }
-    .hdr h1 { font-size: 23px; }
-    .twocol, .deckwrap { grid-template-columns: 1fr; }
-    .step { grid-template-columns: 1fr; gap: 2px; }
-    .step .ph { color: var(--blue); }
-    .chance td.opp .code { display: inline; margin-left: 4px; }
-  }
-</style>
-</head>
-<body>
-
-<!-- ===================== HEADER ===================== -->
-<header class="hdr">
-  <h1>Nami — OP16 Tournament Sheet</h1>
-  <div class="sub">Blue/Yellow Thriller&nbsp;Bark + Blackbeard grind &nbsp;·&nbsp; OP11-041 &nbsp;·&nbsp; n = 4,555 ranked games</div>
-  <div class="ov">
-    <span>Overall WR 62.5% (n=3,940)</span>
-    <span>Go 1st 61.7% (n=2,552)</span>
-    <span>Go 2nd 63.9% (n=1,388)</span>
-    <span>Better seat: SECOND</span>
-    <span>Mirror n=827</span>
-  </div>
-  <div class="verify">⚠ Verification status: NOT VERIFIED (pass = false)</div>
-</header>
-
-<!-- ===================== 1. SEAT CHANCE TABLE ===================== -->
-<section class="nobreak">
-  <h2><span class="num">1</span> Seat Chance-Table <span class="tag">every matchup · sorted by sample size</span></h2>
-  <div class="lede"><b>Read your opponent's leader, find the row, pick the seat in the "PICK" column.</b> Green = favored, red = unfavored, amber = even. % shown per seat with (n). Win% = your Nami win rate in that seat.</div>
-  <table class="chance">
-    <thead>
-      <tr>
-        <th>Opponent</th>
-        <th style="text-align:center">Go FIRST<br>win% (n)</th>
-        <th style="text-align:center">Go SECOND<br>win% (n)</th>
-        <th style="text-align:center">PICK</th>
-        <th style="text-align:center">Cue</th>
-        <th>Conf.</th>
-      </tr>
-    </thead>
-    <tbody id="chance-body">
-      <!-- rows injected -->
-    </tbody>
-  </table>
-  <div class="legend">
-    <span><span class="chip" style="background:var(--green)"></span><b>Favored</b> (best seat &ge; 55%)</span>
-    <span><span class="chip" style="background:var(--red)"></span><b>Unfavored</b> (best seat &le; 50%)</span>
-    <span><span class="chip" style="background:var(--amber)"></span><b>Even / close</b> (50–55%)</span>
-    <span><span class="seat first" style="padding:1px 7px">1ST</span>/<span class="seat second" style="padding:1px 7px">2ND</span>/<span class="seat either" style="padding:1px 7px">EITHER</span> = recommended seat</span>
-    <span><b>Conf:</b> solid n&ge;40 · directional 15–39 · thin &lt;15</span>
-  </div>
-</section>
-
-<!-- ===================== 2. MIRROR CHEAT-BOX ===================== -->
-<section class="mirror nobreak">
-  <h2><span class="num">2</span> MIRROR Cheat-Box <span class="tag">the key matchup · n=813 decisive · 827 in seat data</span></h2>
-
-  <div class="keybox">
-    <span class="big">SEAT → GO SECOND</span>
-    <span>2nd wins 53.6% (436/813) · long games (&ge;17 plies) 60.1% (n=278) · 1st only 46.4%</span>
-  </div>
-
-  <div class="lede" style="margin-top:-2px">
-    <b>GO SECOND AND PLAY THE LONG GAME.</b> The mirror is a grind decided from your own-turn 9 onward, not an early race.
-    Whoever pokes first life usually <b>LOSES</b> (first-life dealer wins only 45.2%, n=812). Win by out-developing + out-drawing, then burst life turn 9+. If forced FIRST, keep it short &amp; press a real lead — 1st is break-even (47.4%) only in fast &le;12-ply games.
-  </div>
-
-  <div class="mhead">Step-by-step game-plan</div>
-  <div class="plan">
-    <div class="step"><div class="ph">Die roll</div><div class="bd"><span class="do">Choose to go SECOND.</span><span class="stat">2nd 53.6% (436/813); 60.1% in long &ge;17-ply games (n=278). 1st = 46.4%.</span></div></div>
-    <div class="step"><div class="ph">Mulligan</div><div class="bd"><span class="do">Keep board + engine hands</span> over hands that only enable an early leader poke. Want bodies + Nico Robin (EB03-055, 99% incl), Nami (EB03-053, 97%), Zeus (95%), Borsalino (89%).<span class="stat">Winners out-draw 8.0 vs 6.7 and out-attack with chars 10.7 vs 8.3 (n=813).</span></div></div>
-    <div class="step"><div class="ph">Turns 1–4 · develop</div><div class="bd"><span class="do">DEVELOP, don't poke.</span> Drop bodies (first body ~own-turn 3), grow engine. Do NOT spend DON/a swing just to deal first life into an empty board.<span class="stat">First-life dealer wins 45.2% (n=812); early-life leader 42.9% (n=546).</span></div></div>
-    <div class="step"><div class="ph">Turns 1–4 · defense</div><div class="bd"><span class="do">Bank your counters.</span> Take a poke or two, save Zeus (2000), Baby 5 (2000), Borsalino/Nami (1000) for the turns that matter.<span class="stat">LOSER plays more counters (8.15 vs 7.6) &amp; more value (12162 vs 11268).</span></div></div>
-    <div class="step"><div class="ph">Turns 5–7 · mid</div><div class="bd"><span class="do">WIN THE BOARD.</span> Get to 2–3 sticking characters and swing with the board, not just the leader. Keep your own life topped via life-to-hand recursion.<span class="stat">Board width T5 1.99 / T7 2.96 vs loser 1.71 / 2.72. Winner life recovers T5 2.85 → T8 3.12.</span></div></div>
-    <div class="step"><div class="ph">Turns 9–11 · close</div><div class="bd"><span class="do">BURST.</span> Convert your wider board into a sustained multi-attack life push. Land Whitebeard (OP13-042, 10c/12000).<span class="stat">Life-taken jumps T9: winner 0.47/turn vs 0.30, holds to T11. Whitebeard down 88.8% (winner) vs 79.3%.</span></div></div>
-    <div class="step"><div class="ph">Closing</div><div class="bd"><span class="do">Push when they're out of counters</span> — a dominant board closes from even or behind; don't wait to be ahead on life.<span class="stat">Winners close from median 2 life (38 won from 0). 199 opps concede at 2–3 life with board lost.</span></div></div>
-  </div>
-
-  <div class="mhead">Pivotal decisions</div>
-  <div class="twocol">
-    <div class="pivot">
-      <div class="piv"><span class="n"></span><div class="d">Take the SECOND seat at the die roll.<span class="stat">53.6% 2nd WR (n=813); 60.1% long (n=278). 1st break-even only in &le;12-ply (47.4%, n=116).</span></div></div>
-      <div class="piv"><span class="n"></span><div class="d">Do NOT spend tempo to deal first life — develop instead.<span class="stat">First-life dealer 45.2% (n=812); early-life leader 42.9% (n=546).</span></div></div>
-      <div class="piv"><span class="n"></span><div class="d">Attack with your BOARD, not just the leader — bodies that stick &amp; swing every turn.<span class="stat">+2.45 char attacks/game (10.71 vs 8.26) — the biggest gap. Deploy count is equal (~7).</span></div></div>
-      <div class="piv"><span class="n"></span><div class="d">Keep the card engine running wider than your opponent.<span class="stat">+1.3 engine draws/game (7.99 vs 6.68). More cards = more counters AND board.</span></div></div>
-    </div>
-    <div class="pivot">
-      <div class="piv"><span class="n"></span><div class="d">Bank counters early; don't out-spend defending the early pokes.<span class="stat">Losers play more counters (8.15 vs 7.6) &amp; more value early (1303 vs 1170, T1–5).</span></div></div>
-      <div class="piv"><span class="n"></span><div class="d">Time your life push for own-turn 9+, after winning the board (T5–7).<span class="stat">Through T8 ~0.2–0.3 life/turn both; at T9 winner 0.47 vs 0.30, holds (n&ge;755).</span></div></div>
-      <div class="piv"><span class="n"></span><div class="d">Land your big finisher — Edward Newgate SP (10c/12000).<span class="stat">Down for the winner 88.8% vs 79.3% (n=813). 79% mirror inclusion.</span></div></div>
-      <div class="piv"><span class="n"></span><div class="d">If forced FIRST: keep it short, press a real lead — don't let it reach turn 17+.<span class="stat">1st break-even &le;12-ply (47.4%, n=116) but collapses to 39.9% in &ge;17-ply (n=278).</span></div></div>
-    </div>
-  </div>
-</section>
-
-<!-- ===================== 3. WINNING CURVE ===================== -->
-<section class="nobreak">
-  <h2><span class="num">3</span> Winning Curve <span class="tag">best deploy per seat, own-turns 1–7</span></h2>
-  <div class="lede">Highest-WR deploy with n&ge;15 at each of your own turns. <span class="thinflag">▲ THIN</span> = no n&ge;15 deploy, modal-in-wins fallback. Win% is the win rate of games where that card was deployed at that turn.</div>
-  <div class="deckwrap">
-    <div>
-      <table class="curve">
-        <thead><tr><th colspan="3" class="seathdr">▶ Going FIRST &nbsp;·&nbsp; seat WR 61.7%</th></tr>
-        <tr><th>T</th><th>Best deploy</th><th style="text-align:center">Win% (n)</th></tr></thead>
-        <tbody id="curve-first"></tbody>
-      </table>
-    </div>
-    <div>
-      <table class="curve">
-        <thead><tr><th colspan="3" class="seathdr sec">▶ Going SECOND &nbsp;·&nbsp; seat WR 63.9%</th></tr>
-        <tr><th>T</th><th>Best deploy</th><th style="text-align:center">Win% (n)</th></tr></thead>
-        <tbody id="curve-second"></tbody>
-      </table>
-    </div>
-  </div>
-  <div class="foot">Modal winning line (most common deploy among won games): T1 none → T2 Girl (P-096) → T3 Nami (EB03-053) → T4 Nico Robin (EB03-055) → T5 Nico Robin / Gecko Moria → T6–7 Edward Newgate SP (OP13-042). The early turns are mostly engine setup; the finisher pattern is identical across seats.</div>
-</section>
-
-<!-- ===================== 4. DECKLIST ===================== -->
-<section class="nobreak">
-  <h2><span class="num">4</span> Decklist <span class="tag">Blackbeard–Thriller Bark hybrid · 51.6% cohort WR</span></h2>
-  <div class="deckhead"><span class="lead">LEADER · OP11-041 · Nami</span> <span style="color:var(--mut);font-size:13px">5000 power · 4 life · Blue/Yellow</span> <span class="tot">Main deck: 50</span></div>
-  <div class="deckwrap">
-    <div>
-      <table class="deck">
-        <thead><tr><th class="q">×</th><th>Card</th><th style="text-align:center">Cost</th><th style="text-align:center">Pow</th><th style="text-align:center">Ctr</th></tr></thead>
-        <tbody id="deck-a"></tbody>
-      </table>
-    </div>
-    <div>
-      <table class="deck">
-        <thead><tr><th class="q">×</th><th>Card</th><th style="text-align:center">Cost</th><th style="text-align:center">Pow</th><th style="text-align:center">Ctr</th></tr></thead>
-        <tbody id="deck-b"></tbody>
-      </table>
-
-      <div class="techbox">
-        <h3>Top tech / flex (above core 11 four-ofs)</h3>
-        <table>
-          <thead><tr><th>Card</th><th style="text-align:center">Incl%</th><th style="text-align:center">WR</th><th style="text-align:center">n</th></tr></thead>
-          <tbody>
-            <tr><td>ZEHAHAHAHA (OP16-116) · 8c Event</td><td style="text-align:center">41%</td><td class="wrg">54.0%</td><td style="text-align:center">63</td></tr>
-            <tr><td>Will You Be My Servant? (EB03-060) · 1c</td><td style="text-align:center">35%</td><td class="wrg">55.1%</td><td style="text-align:center">69</td></tr>
-            <tr><td>Nojiko (OP03-048) · 2c bounce</td><td style="text-align:center">18%</td><td class="wrg">58.1%</td><td style="text-align:center">31</td></tr>
-            <tr><td>Catarina Devon (OP16-104) · 4c</td><td style="text-align:center">12%</td><td class="wrg">60.0%</td><td style="text-align:center">20</td></tr>
-          </tbody>
-        </table>
-        <div class="foot" style="margin-top:8px">
-          <b>Flex slots:</b> Edward Newgate (OP13-042) runs 2–4 · Roronoa Zoro (OP15-113) runs 1–4 (mode 2) · Sanji (OP15-047) runs 1–2 (most contested).
-          <b>Cut despite popularity:</b> Kikunojo (OP06-104) — 46% incl but only 42.3% WR over n=130; Silvers Rayleigh (OP14-108) — 44.9% WR over n=98.
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="foot">
-    <ul>
-      <li><b>Core 11 four-ofs (locked, inc 66–100%):</b> Teach, Nico Robin (EB03-055), Nami (EB03-053), Zeus, Baby 5, Borsalino, Girl, Gecko Moria, Dr. Hogback, Perona, Kumacy.</li>
-      <li>Build = match-weighted modal quantities within the 57-list Blackbeard cohort (153 games, 51.6% WR), inclusion-ordered, sums to exactly 50. Pure Thriller Bark with no Blackbeard package wins only 38.3%.</li>
-      <li><b>Caveat:</b> no single Nami list exceeds 11 matches — the exact 50 is a modal synthesis, not one pilot's list. Verification status pass=false.</li>
-    </ul>
-  </div>
-</section>
-
-<script>
-/* ---------------- DATA (embedded from the four source JSONs) ---------------- */
-
-// 1. Chance table rows (already sorted by n_total desc in source)
-const chanceRows = [
-  {opp:"OP15-058", name:"Enel", mirror:false, wf:87.5, nf:582, ws:73.9, ns:479, nt:1061, rec:"first", rel:"solid"},
-  {opp:"OP11-041", name:"Nami (MIRROR)", mirror:true, wf:46.8, nf:827, ws:53.2, ns:827, nt:827, rec:"second", rel:"solid"},
-  {opp:"OP15-002", name:"Lucy", mirror:false, wf:48.9, nf:141, ws:38.3, ns:175, nt:316, rec:"first", rel:"solid"},
-  {opp:"OP13-001", name:"Monkey.D.Luffy (001)", mirror:false, wf:48.4, nf:161, ws:51.5, ns:103, nt:264, rec:"second", rel:"solid"},
-  {opp:"OP13-002", name:"Portgas.D.Ace (002)", mirror:false, wf:51.6, nf:91, ws:58.8, ns:114, nt:205, rec:"second", rel:"solid"},
-  {opp:"OP05-098", name:"Enel (SP)", mirror:false, wf:46.0, nf:124, ws:59.5, ns:79, nt:203, rec:"second", rel:"solid"},
-  {opp:"OP14-020", name:"Dracule Mihawk", mirror:false, wf:57.9, nf:107, ws:63.6, ns:88, nt:195, rec:"second", rel:"solid"},
-  {opp:"OP15-098", name:"Monkey.D.Luffy (OP15-098)", mirror:false, wf:78.1, nf:114, ws:86.0, ns:50, nt:164, rec:"second", rel:"solid"},
-  {opp:"OP14-079", name:"Crocodile", mirror:false, wf:92.1, nf:38, ws:92.5, ns:40, nt:78, rec:"either", rel:"solid"},
-  {opp:"OP12-061", name:"Donquixote Rosinante (061)", mirror:false, wf:48.1, nf:27, ws:48.0, ns:25, nt:52, rec:"either", rel:"solid"},
-  {opp:"OP12-020", name:"Roronoa Zoro", mirror:false, wf:71.4, nf:21, ws:77.3, ns:22, nt:43, rec:"second", rel:"solid"},
-  {opp:"OP11-001", name:"Koby (001)", mirror:false, wf:58.6, nf:29, ws:27.3, ns:11, nt:40, rec:"first", rel:"solid"},
-  {opp:"OP09-081", name:"Marshall.D.Teach (OP09-081)", mirror:false, wf:28.6, nf:21, ws:44.4, ns:18, nt:39, rec:"second", rel:"directional"},
-  {opp:"OP07-019", name:"Jewelry Bonney (OP07-019)", mirror:false, wf:72.7, nf:22, ws:53.3, ns:15, nt:37, rec:"first", rel:"directional"},
-  {opp:"OP13-003", name:"Gol.D.Roger (003)", mirror:false, wf:87.0, nf:23, ws:90.0, ns:10, nt:33, rec:"first", rel:"directional"},
-  {opp:"EB04-001", name:"Jewelry Bonney (EB04-001)", mirror:false, wf:0.0, nf:10, ws:44.4, ns:18, nt:28, rec:"second", rel:"directional"},
-  {opp:"OP14-041", name:"Boa Hancock", mirror:false, wf:100.0, nf:19, ws:100.0, ns:9, nt:28, rec:"first", rel:"directional"},
-  {opp:"OP13-079", name:"Imu", mirror:false, wf:88.9, nf:9, ws:94.4, ns:18, nt:27, rec:"second", rel:"directional"},
-  {opp:"ST29-001", name:"Monkey.D.Luffy (001)", mirror:false, wf:82.4, nf:17, ws:50.0, ns:10, nt:27, rec:"first", rel:"directional"},
-  {opp:"OP08-098", name:"Kalgara (SP)", mirror:false, wf:66.7, nf:12, ws:80.0, ns:10, nt:22, rec:"second", rel:"directional"},
-  {opp:"OP09-001", name:"Shanks (Reprint)", mirror:false, wf:64.3, nf:14, ws:57.1, ns:7, nt:21, rec:"first", rel:"directional"},
-  {opp:"OP14-060", name:"Donquixote Doflamingo", mirror:false, wf:92.9, nf:14, ws:100.0, ns:7, nt:21, rec:"second", rel:"directional"},
-  {opp:"OP14-040", name:"Jinbe", mirror:false, wf:90.9, nf:11, ws:100.0, ns:7, nt:18, rec:"second", rel:"directional"},
-  {opp:"OP09-062", name:"Nico Robin (062)", mirror:false, wf:90.9, nf:11, ws:100.0, ns:4, nt:15, rec:"second", rel:"directional"},
-  {opp:"OP16-079", name:"Yamato (079)", mirror:false, wf:100.0, nf:8, ws:100.0, ns:7, nt:15, rec:"first", rel:"directional"},
-  {opp:"ST13-003", name:"Monkey.D.Luffy (003)", mirror:false, wf:20.0, nf:5, ws:33.3, ns:9, nt:14, rec:"second", rel:"thin"},
-  {opp:"OP12-040", name:"Kuzan (040)", mirror:false, wf:25.0, nf:8, ws:80.0, ns:5, nt:13, rec:"second", rel:"thin"},
-  {opp:"OP14-080", name:"Gecko Moria", mirror:false, wf:100.0, nf:7, ws:100.0, ns:6, nt:13, rec:"first", rel:"thin"},
-  {opp:"EB02-010", name:"Monkey.D.Luffy (010)", mirror:false, wf:66.7, nf:9, ws:33.3, ns:3, nt:12, rec:"first", rel:"thin"},
-  {opp:"OP10-003", name:"Sugar (003)", mirror:false, wf:33.3, nf:3, ws:25.0, ns:8, nt:11, rec:"first", rel:"thin"},
-  {opp:"OP11-040", name:"Monkey.D.Luffy (040)", mirror:false, wf:10.0, nf:10, ws:null, ns:0, nt:10, rec:"first", rel:"thin"},
-  {opp:"OP16-080", name:"Marshall.D.Teach", mirror:false, wf:75.0, nf:4, ws:75.0, ns:4, nt:8, rec:"first", rel:"thin"},
-  {opp:"OP09-061", name:"Monkey.D.Luffy (OP09-061)", mirror:false, wf:100.0, nf:2, ws:40.0, ns:5, nt:7, rec:"first", rel:"thin"},
-  {opp:"OP16-022", name:"Monkey D. Luffy", mirror:false, wf:100.0, nf:6, ws:100.0, ns:1, nt:7, rec:"first", rel:"thin"},
-  {opp:"EB03-001", name:"Nefeltari Vivi (001)", mirror:false, wf:0.0, nf:6, ws:null, ns:0, nt:6, rec:"first", rel:"thin"},
-  {opp:"OP12-041", name:"Sanji (041)", mirror:false, wf:80.0, nf:5, ws:100.0, ns:1, nt:6, rec:"second", rel:"thin"},
-  {opp:"OP06-022", name:"Yamato (OP06-022)", mirror:false, wf:66.7, nf:3, ws:100.0, ns:2, nt:5, rec:"second", rel:"thin"},
-  {opp:"OP16-060", name:"Sengoku", mirror:false, wf:100.0, nf:5, ws:null, ns:0, nt:5, rec:"first", rel:"thin"},
-  {opp:"OP12-081", name:"Koala (081)", mirror:false, wf:50.0, nf:4, ws:null, ns:0, nt:4, rec:"first", rel:"thin"},
-  {opp:"OP07-059", name:"Foxy (SP)", mirror:false, wf:100.0, nf:1, ws:50.0, ns:2, nt:3, rec:"first", rel:"thin"},
-  {opp:"OP08-021", name:"Carrot (SP)", mirror:false, wf:100.0, nf:2, ws:100.0, ns:1, nt:3, rec:"first", rel:"thin"},
-  {opp:"OP09-042", name:"Buggy (OP09-042)", mirror:false, wf:100.0, nf:1, ws:50.0, ns:2, nt:3, rec:"first", rel:"thin"},
-  {opp:"OP05-060", name:"Monkey.D.Luffy (SP)", mirror:false, wf:100.0, nf:1, ws:100.0, ns:1, nt:2, rec:"first", rel:"thin"},
-  {opp:"OP09-022", name:"Lim (022)", mirror:false, wf:100.0, nf:1, ws:0.0, ns:1, nt:2, rec:"first", rel:"thin"},
-  {opp:"OP10-022", name:"Trafalgar Law (022)", mirror:false, wf:100.0, nf:1, ws:0.0, ns:1, nt:2, rec:"first", rel:"thin"},
-  {opp:"OP10-042", name:"Usopp (042)", mirror:false, wf:50.0, nf:2, ws:null, ns:0, nt:2, rec:"first", rel:"thin"},
-  {opp:"OP11-021", name:"Jinbe (021)", mirror:false, wf:null, nf:0, ws:0.0, ns:2, nt:2, rec:"second", rel:"thin"},
-  {opp:"OP11-022", name:"Shirahoshi (022)", mirror:false, wf:0.0, nf:1, ws:0.0, ns:1, nt:2, rec:"first", rel:"thin"},
-  {opp:"OP13-004", name:"Sabo (004)", mirror:false, wf:50.0, nf:2, ws:null, ns:0, nt:2, rec:"first", rel:"thin"},
-  {opp:"OP15-022", name:"Brook (OP15-022)", mirror:false, wf:null, nf:0, ws:0.0, ns:2, nt:2, rec:"second", rel:"thin"},
-  {opp:"PRB01-001", name:"Sanji (PRB01-001)", mirror:false, wf:0.0, nf:1, ws:0.0, ns:1, nt:2, rec:"first", rel:"thin"},
-  {opp:"ST13-001", name:"Sabo (001)", mirror:false, wf:null, nf:0, ws:0.0, ns:2, nt:2, rec:"second", rel:"thin"},
-  {opp:"ST13-002", name:"Portgas.D.Ace (002)", mirror:false, wf:0.0, nf:1, ws:0.0, ns:1, nt:2, rec:"first", rel:"thin"},
-  {opp:"EB01-021", name:"Hannyabal (SP)", mirror:false, wf:100.0, nf:1, ws:null, ns:0, nt:1, rec:"first", rel:"thin"},
-  {opp:"OP06-080", name:"Gecko Moria (SP)", mirror:false, wf:null, nf:0, ws:100.0, ns:1, nt:1, rec:"second", rel:"thin"},
-  {opp:"OP08-057", name:"King (SP)", mirror:false, wf:100.0, nf:1, ws:null, ns:0, nt:1, rec:"first", rel:"thin"},
-  {opp:"OP10-099", name:"Eustass\"Captain\"Kid (099)", mirror:false, wf:100.0, nf:1, ws:null, ns:0, nt:1, rec:"first", rel:"thin"},
-  {opp:"OP11-062", name:"Charlotte Katakuri (062)", mirror:false, wf:0.0, nf:1, ws:null, ns:0, nt:1, rec:"first", rel:"thin"},
-  {opp:"OP16-001", name:"Portgas.D.Ace (001)", mirror:false, wf:100.0, nf:1, ws:null, ns:0, nt:1, rec:"first", rel:"thin"},
-  {opp:"ST05-001", name:"Shanks", mirror:false, wf:0.0, nf:1, ws:null, ns:0, nt:1, rec:"first", rel:"thin"},
-  {opp:"ST12-001", name:"Roronoa Zoro & Sanji", mirror:false, wf:0.0, nf:1, ws:null, ns:0, nt:1, rec:"first", rel:"thin"},
-  {opp:"ST30-001", name:"Luffy & Ace", mirror:false, wf:100.0, nf:1, ws:null, ns:0, nt:1, rec:"first", rel:"thin"}
-];
-
-// 3. Winning curve — best_play per seat T1..T7
-const curve = {
-  first: [
-    {t:1, code:"OP15-052", name:"Leo", wr:80.0, n:10, thin:true},
-    {t:2, code:"P-096", name:"Girl (OP14 Release Event)", wr:61.4, n:1008, thin:false},
-    {t:3, code:"EB03-024", name:"Nefeltari Vivi (024)", wr:71.4, n:42, thin:false},
-    {t:4, code:"OP15-109", name:"Nico Robin (OP15-109)", wr:84.2, n:57, thin:false},
-    {t:5, code:"OP15-109", name:"Nico Robin (OP15-109)", wr:82.2, n:45, thin:false},
-    {t:6, code:"OP14-111", name:"Perona", wr:74.2, n:31, thin:false},
-    {t:7, code:"OP14-111", name:"Perona", wr:74.1, n:27, thin:false}
-  ],
-  second: [
-    {t:1, code:"OP06-106", name:"Kouzuki Hiyori (Alt Art)", wr:65.4, n:26, thin:false},
-    {t:2, code:"PRB02-008", name:"Marco (Alternate Art)", wr:67.9, n:352, thin:false},
-    {t:3, code:"EB03-024", name:"Nefeltari Vivi (024)", wr:73.2, n:41, thin:false},
-    {t:4, code:"OP15-109", name:"Nico Robin (OP15-109)", wr:70.8, n:65, thin:false},
-    {t:5, code:"OP13-042", name:"Edward.Newgate (SP)", wr:62.4, n:1122, thin:false},
-    {t:6, code:"OP14-111", name:"Perona", wr:75.9, n:29, thin:false},
-    {t:7, code:"OP13-042", name:"Edward.Newgate (SP)", wr:61.3, n:336, thin:false}
-  ]
-};
-
-// 4. Decklist (maindeck, qty + stats). split into two columns
-const deck = [
-  {q:4, code:"OP16-119", name:"Marshall D. Teach", cost:"8", pow:"10000", ctr:"—", core:true},
-  {q:4, code:"EB03-055", name:"Nico Robin (055)", cost:"7", pow:"8000", ctr:"—", core:true},
-  {q:4, code:"EB03-053", name:"Nami (053)", cost:"5", pow:"6000", ctr:"1000", core:true},
-  {q:4, code:"OP11-106", name:"Zeus (SP)", cost:"2", pow:"2000", ctr:"2000", core:true},
-  {q:4, code:"OP12-112", name:"Baby 5 (112)", cost:"4", pow:"5000", ctr:"2000", core:true},
-  {q:4, code:"EB04-058", name:"Borsalino", cost:"5", pow:"6000", ctr:"1000", core:true},
-  {q:4, code:"P-096", name:"Girl (OP14 Release Event)", cost:"2", pow:"0", ctr:"1000", core:true},
-  {q:4, code:"OP14-104", name:"Gecko Moria", cost:"8", pow:"10000", ctr:"—", core:true},
-  {q:4, code:"OP14-110", name:"Dr. Hogback", cost:"4", pow:"5000", ctr:"1000", core:true},
-  {q:4, code:"OP14-111", name:"Perona", cost:"4", pow:"5000", ctr:"1000", core:true},
-  {q:4, code:"OP14-102", name:"Kumacy", cost:"1", pow:"2000", ctr:"2000", core:true},
-  {q:3, code:"OP13-042", name:"Edward.Newgate (SP)", cost:"10", pow:"12000", ctr:"—", flex:true},
-  {q:2, code:"OP15-113", name:"Roronoa Zoro (OP15-113)", cost:"4", pow:"6000", ctr:"—", flex:true},
-  {q:1, code:"OP15-047", name:"Sanji (OP15-047)", cost:"3", pow:"4000", ctr:"1000", flex:true}
-];
-
-/* ---------------- RENDER ---------------- */
-function seatPill(rec){
-  const map = {first:["first","1ST"], second:["second","2ND"], either:["either","EITHER"]};
-  const [cls,label] = map[rec] || ["either", rec.toUpperCase()];
-  return `<span class="seat ${cls}">${label}</span>`;
-}
-// favored/unfavored/even: based on the BEST available seat WR
-function cueFor(r){
-  const vals = [r.wf, r.ws].filter(v => v !== null);
-  const best = Math.max(...vals);
-  if (best >= 55) return ['fav','GREEN ✓'];
-  if (best <= 50) return ['unfav','RED ✕'];
-  return ['even','EVEN ~'];
-}
-function pctCell(wr, n){
-  if (wr === null || n === 0) return `<td class="num dim"><span class="pct">—</span><br><span class="n">n=0</span></td>`;
-  return `<td class="num"><span class="pct">${wr.toFixed(0)}%</span><br><span class="n">n=${n}</span></td>`;
-}
-
-const cbody = document.getElementById('chance-body');
-chanceRows.forEach(r => {
-  const tr = document.createElement('tr');
-  if (r.mirror) tr.className = 'mirror-row';
-  else if (r.rel === 'thin') tr.className = 'thin';
-  const [cueCls, cueTxt] = cueFor(r);
-  // highlight which seat cell is the pick
-  const firstCell = pctCell(r.wf, r.nf);
-  const secondCell = pctCell(r.ws, r.ns);
-  tr.innerHTML =
-    `<td class="opp">${r.name}${r.mirror?' ★':''}<span class="code">${r.opp}</span></td>` +
-    firstCell + secondCell +
-    `<td style="text-align:center">${seatPill(r.rec)}</td>` +
-    `<td class="cue ${cueCls}">${cueTxt}</td>` +
-    `<td class="rel">${r.rel}</td>`;
-  cbody.appendChild(tr);
-});
-
-function renderCurve(arr, id){
-  const tb = document.getElementById(id);
-  arr.forEach(c => {
-    const tr = document.createElement('tr');
-    tr.innerHTML =
-      `<td class="t">T${c.t}</td>` +
-      `<td class="play">${c.name}${c.thin?' <span class="thinflag">▲ THIN</span>':''}<br><span class="code">${c.code}</span></td>` +
-      `<td class="wr">${c.wr.toFixed(0)}%<br><span class="n">n=${c.n}</span></td>`;
-    tb.appendChild(tr);
-  });
-}
-renderCurve(curve.first, 'curve-first');
-renderCurve(curve.second, 'curve-second');
-
-function renderDeck(slice, id){
-  const tb = document.getElementById(id);
-  slice.forEach(d => {
-    const tr = document.createElement('tr');
-    tr.className = d.core ? 'core' : (d.flex ? 'flex' : '');
-    tr.innerHTML =
-      `<td class="q">${d.q}</td>` +
-      `<td class="nm">${d.name}<span class="code"> ${d.code}</span></td>` +
-      `<td class="cc">${d.cost}</td>` +
-      `<td class="cc">${d.pow}</td>` +
-      `<td class="cc">${d.ctr}</td>`;
-    tb.appendChild(tr);
-  });
-}
-const half = Math.ceil(deck.length/2);
-renderDeck(deck.slice(0, half), 'deck-a');
-renderDeck(deck.slice(half), 'deck-b');
-</script>
-</body>
-</html>
+<!doctype html><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Nami OP16 Tournament Sheet</title>
+<style>body{background:#0b0e13;color:#e9eef5;font:15px/1.5 -apple-system,Helvetica;margin:0;padding:14px;max-width:860px;margin:auto}
+h1{color:#f2c94c;font-size:22px;margin:.2em 0}h2{color:#f2c94c;font-size:18px;border-bottom:1px solid #2a2f3a;padding-bottom:4px;margin-top:26px}
+table{border-collapse:collapse;width:100%;font-size:14px}td,th{border:1px solid #2a2f3a;padding:6px 9px}th{background:#161a22;color:#9aa4b2;position:sticky;top:0}
+.q{font-weight:700;color:#f2c94c;text-align:center}.rec{font-weight:700}.box{background:#10131a;border:1px solid #2a2f3a;border-radius:8px;padding:10px 14px;margin:8px 0}
+.mirror{border:2px solid #f2c94c}.up{color:#5ad15a;font-weight:700}.dn{color:#ff6b6b;font-weight:700}small{color:#7c8694}</style>
+<h1>🎴 Nami (OP11-041) — OP16 Tournament Sheet</h1>
+<div class=box><b>Overall 62.2% WR</b> across <b>3,940</b> ranked games · going <b>FIRST 61.6%</b> (n=2542) · <b>SECOND 63.4%</b> (n=1398). <small>Every number recomputed from raw decisive games (no padding). Verified vs independent re-stream.</small></div>
+<h2>① Seat chance-sheet — go FIRST or SECOND?</h2>
+<table><tr><th>Opponent</th><th>Go FIRST</th><th>Go SECOND</th><th>✅ Pick</th><th>Sample</th></tr>
+<tr><td>Nami (MIRROR)</td><td style="background:#3a3320;text-align:center">46.4% <small>(n=813)</small></td><td style="background:#3a3320;text-align:center">53.6% <small>(n=813)</small></td><td class=rec style=text-align:center>◀ 2nd</td><td><small>solid n=1626</small></td></tr>
+<tr><td>Enel (OP15-058)</td><td style="background:#14401c;text-align:center">88.1% <small>(n=578)</small></td><td style="background:#14401c;text-align:center">73.9% <small>(n=479)</small></td><td class=rec style=text-align:center>▶ 1st</td><td><small>solid n=1057</small></td></tr>
+<tr><td>Lucy</td><td style="background:#3a3320;text-align:center">49.6% <small>(n=139)</small></td><td style="background:#4a1414;text-align:center">38.3% <small>(n=175)</small></td><td class=rec style=text-align:center>▶ 1st</td><td><small>solid n=314</small></td></tr>
+<tr><td>Monkey.D.Luffy (001)</td><td style="background:#3a3320;text-align:center">48.4% <small>(n=161)</small></td><td style="background:#3a3320;text-align:center">52.0% <small>(n=102)</small></td><td class=rec style=text-align:center>◀ 2nd</td><td><small>solid n=263</small></td></tr>
+<tr><td>Enel (SP)</td><td style="background:#3a3320;text-align:center">46.0% <small>(n=124)</small></td><td style="background:#14401c;text-align:center">59.5% <small>(n=79)</small></td><td class=rec style=text-align:center>◀ 2nd</td><td><small>solid n=203</small></td></tr>
+<tr><td>Portgas.D.Ace (002)</td><td style="background:#3a3320;text-align:center">51.6% <small>(n=91)</small></td><td style="background:#14401c;text-align:center">62.0% <small>(n=108)</small></td><td class=rec style=text-align:center>◀ 2nd</td><td><small>solid n=199</small></td></tr>
+<tr><td>Dracule Mihawk</td><td style="background:#14401c;text-align:center">57.9% <small>(n=107)</small></td><td style="background:#14401c;text-align:center">64.4% <small>(n=87)</small></td><td class=rec style=text-align:center>◀ 2nd</td><td><small>solid n=194</small></td></tr>
+<tr><td>Monkey.D.Luffy (OP15-098)</td><td style="background:#14401c;text-align:center">78.1% <small>(n=114)</small></td><td style="background:#14401c;text-align:center">86.0% <small>(n=50)</small></td><td class=rec style=text-align:center>◀ 2nd</td><td><small>solid n=164</small></td></tr>
+<tr><td>Crocodile</td><td style="background:#14401c;text-align:center">92.1% <small>(n=38)</small></td><td style="background:#14401c;text-align:center">92.5% <small>(n=40)</small></td><td class=rec style=text-align:center>either</td><td><small>solid n=78</small></td></tr>
+<tr><td>Donquixote Rosinante (061)</td><td style="background:#3a3320;text-align:center">50.0% <small>(n=26)</small></td><td style="background:#3a3320;text-align:center">48.0% <small>(n=25)</small></td><td class=rec style=text-align:center>either</td><td><small>solid n=51</small></td></tr>
+<tr><td>Roronoa Zoro</td><td style="background:#14401c;text-align:center">71.4% <small>(n=21)</small></td><td style="background:#14401c;text-align:center">77.3% <small>(n=22)</small></td><td class=rec style=text-align:center>◀ 2nd</td><td><small>solid n=43</small></td></tr>
+<tr><td>Koby (001)</td><td style="background:#14401c;text-align:center">58.6% <small>(n=29)</small></td><td style="background:#4a1414;text-align:center">30.0% <small>(n=10)</small></td><td class=rec style=text-align:center>▶ 1st</td><td><small>directional n=39</small></td></tr>
+<tr><td>Marshall.D.Teach (OP09-081)</td><td style="background:#4a1414;text-align:center">28.6% <small>(n=21)</small></td><td style="background:#4a1414;text-align:center">44.4% <small>(n=18)</small></td><td class=rec style=text-align:center>◀ 2nd</td><td><small>directional n=39</small></td></tr>
+<tr><td>Jewelry Bonney (OP07-019)</td><td style="background:#14401c;text-align:center">72.7% <small>(n=22)</small></td><td style="background:#3a3320;text-align:center">53.3% <small>(n=15)</small></td><td class=rec style=text-align:center>▶ 1st</td><td><small>directional n=37</small></td></tr>
+<tr><td>None</td><td style="background:#4a1414;text-align:center">0.0% <small>(n=16)</small></td><td style="background:#4a1414;text-align:center">0.0% <small>(n=20)</small></td><td class=rec style=text-align:center>either</td><td><small>directional n=36</small></td></tr>
+<tr><td>Gol.D.Roger (003)</td><td style="background:#14401c;text-align:center">90.9% <small>(n=22)</small></td><td style="background:#14401c;text-align:center">100.0% <small>(n=9)</small></td><td class=rec style=text-align:center>▶ 1st</td><td><small>directional n=31</small></td></tr>
+<tr><td>Jewelry Bonney (EB04-001)</td><td style="background:#4a1414;text-align:center">0.0% <small>(n=10)</small></td><td style="background:#4a1414;text-align:center">44.4% <small>(n=18)</small></td><td class=rec style=text-align:center>◀ 2nd</td><td><small>directional n=28</small></td></tr>
+<tr><td>Boa Hancock</td><td style="background:#14401c;text-align:center">100.0% <small>(n=19)</small></td><td style="background:#14401c;text-align:center">100.0% <small>(n=9)</small></td><td class=rec style=text-align:center>▶ 1st</td><td><small>directional n=28</small></td></tr>
+<tr><td>Imu</td><td style="background:#14401c;text-align:center">88.9% <small>(n=9)</small></td><td style="background:#14401c;text-align:center">94.4% <small>(n=18)</small></td><td class=rec style=text-align:center>◀ 2nd</td><td><small>directional n=27</small></td></tr>
+<tr><td>Monkey.D.Luffy (001)</td><td style="background:#14401c;text-align:center">82.4% <small>(n=17)</small></td><td style="background:#3a3320;text-align:center">50.0% <small>(n=10)</small></td><td class=rec style=text-align:center>▶ 1st</td><td><small>directional n=27</small></td></tr>
+<tr><td>Kalgara (SP)</td><td style="background:#14401c;text-align:center">66.7% <small>(n=12)</small></td><td style="background:#14401c;text-align:center">80.0% <small>(n=10)</small></td><td class=rec style=text-align:center>◀ 2nd</td><td><small>directional n=22</small></td></tr>
+<tr><td>Donquixote Doflamingo</td><td style="background:#14401c;text-align:center">92.9% <small>(n=14)</small></td><td style="background:#14401c;text-align:center">100.0% <small>(n=7)</small></td><td class=rec style=text-align:center>◀ 2nd</td><td><small>directional n=21</small></td></tr>
+<tr><td>Shanks (Reprint)</td><td style="background:#14401c;text-align:center">64.3% <small>(n=14)</small></td><td style="background:#14401c;text-align:center">57.1% <small>(n=7)</small></td><td class=rec style=text-align:center>▶ 1st</td><td><small>directional n=21</small></td></tr>
+<tr><td>Jinbe</td><td style="background:#14401c;text-align:center">90.9% <small>(n=11)</small></td><td style="background:#14401c;text-align:center">100.0% <small>(n=7)</small></td><td class=rec style=text-align:center>◀ 2nd</td><td><small>directional n=18</small></td></tr>
+<tr><td>Nico Robin (062)</td><td style="background:#14401c;text-align:center">90.9% <small>(n=11)</small></td><td style="background:#14401c;text-align:center">100.0% <small>(n=4)</small></td><td class=rec style=text-align:center>◀ 2nd</td><td><small>directional n=15</small></td></tr>
+<tr><td>Yamato (079)</td><td style="background:#14401c;text-align:center">100.0% <small>(n=8)</small></td><td style="background:#14401c;text-align:center">100.0% <small>(n=7)</small></td><td class=rec style=text-align:center>▶ 1st</td><td><small>directional n=15</small></td></tr>
+<tr><td>Monkey.D.Luffy (003)</td><td style="background:#4a1414;text-align:center">20.0% <small>(n=5)</small></td><td style="background:#4a1414;text-align:center">33.3% <small>(n=9)</small></td><td class=rec style=text-align:center>◀ 2nd</td><td><small>thin n=14</small></td></tr>
+<tr><td>Kuzan (040)</td><td style="background:#4a1414;text-align:center">25.0% <small>(n=8)</small></td><td style="background:#14401c;text-align:center">80.0% <small>(n=5)</small></td><td class=rec style=text-align:center>◀ 2nd</td><td><small>thin n=13</small></td></tr>
+<tr><td>Gecko Moria</td><td style="background:#14401c;text-align:center">100.0% <small>(n=7)</small></td><td style="background:#14401c;text-align:center">100.0% <small>(n=6)</small></td><td class=rec style=text-align:center>▶ 1st</td><td><small>thin n=13</small></td></tr>
+<tr><td>Monkey.D.Luffy (010)</td><td style="background:#14401c;text-align:center">66.7% <small>(n=9)</small></td><td style="background:#4a1414;text-align:center">33.3% <small>(n=3)</small></td><td class=rec style=text-align:center>▶ 1st</td><td><small>thin n=12</small></td></tr>
+<tr><td>Sugar (003)</td><td style="background:#4a1414;text-align:center">33.3% <small>(n=3)</small></td><td style="background:#4a1414;text-align:center">25.0% <small>(n=8)</small></td><td class=rec style=text-align:center>▶ 1st</td><td><small>thin n=11</small></td></tr>
+</table><small>green = favored (≥55%), red = unfavored (&lt;45%). Sorted by sample size.</small>
+<h2>② The MIRROR (Nami vs Nami) — your key matchup</h2>
+<div class="box mirror">
+<h3 style="color:#f2c94c;font-size:15px;margin:12px 0 2px">Headline</h3>
+<p>GO SECOND IF YOU CAN, AND PLAY THE LONG GAME. Second seat wins the mirror 53.6% (436/813), and the edge grows with game length: 47.4% in short games (&lt;=12 plies, n=116) but 60.1% in long games (&gt;=17 plies, n=278). The mirror is a grind decided after own-turn 9, not an early race. Whoever pokes first life usually LOSES (first-life dealer wins only 45.2%, n=812); the receiver wins. Win by out-developing (winner deploys a wider board and out-draws the loser) then bursting life from turn 9 onward, NOT by early aggression.</p>
+<h3 style="color:#f2c94c;font-size:15px;margin:12px 0 2px">Seat Verdict</h3>
+<p><b>claim:</b> Second seat is favored in the Nami mirror.</p><p><b>first_seat_wr:</b> 46.4</p><p><b>first_seat_record:</b> 377-436</p><p><b>second_seat_wr:</b> 53.6</p><p><b>second_seat_record:</b> 436-377</p><p><b>n:</b> 813</p><p><b>by_game_length:</b> </p><p><b>short_&lt;=12_plies:</b> </p><p><b>second_seat_wr:</b> 47.4</p><p><b>record:</b> 55-61</p><p><b>n:</b> 116</p><p><b>note:</b> First seat is actually fine here — a fast race rewards the extra early tempo.</p><p><b>mid_13-16_plies:</b> </p><p><b>second_seat_wr:</b> 51.1</p><p><b>record:</b> 214-205</p><p><b>n:</b> 419</p><p><b>long_&gt;=17_plies:</b> </p><p><b>second_seat_wr:</b> 60.1</p><p><b>record:</b> 167-111</p><p><b>n:</b> 278</p><p><b>note:</b> The dominant bucket. Long grinds heavily favor going second.</p><p><b>why_second_wins:</b> </p><ul><li>Structural last-attack: the second-seat player owns the final attack turn of the game in 423/812 games vs 389 for first seat — in a life race the player who swings last on the lethal turn closes it.</li><li>Second seat wins MORE both ways: via concede 299 vs 256, via life-out 136 vs 121 (n=812). The edge is not a concede artifact.</li><li>Going second draws on turn 1 (first player skips), and the mirror&#x27;s median length is 14-15 plies, so that extra card compounds over a long game.</li><li>Raw engine output is nearly identical between seats (first vs second: deploys 6.96 vs 6.92, char-attacks 9.31 vs 9.66, draws 7.38 vs 7.29, counters 7.89 vs 7.86, all n=813). The second-seat edge is positional, not from doing more — so do NOT try to &#x27;out-tempo&#x27; from the first seat.</li></ul><p><b>practical:</b> At the die roll: choose to go SECOND. If you are forced first, you are slightly behind (46.4%) — your best out is to keep the game SHORT and decisive (first seat is break-even at 47.4% second-WR in &lt;=12-ply games), i.e. press a real life lead rather than letting it grind to turn 17+ where second seat hits 60%.</p>
+<h3 style="color:#f2c94c;font-size:15px;margin:12px 0 2px">The First Life Trap</h3>
+<p><b>claim:</b> Dealing first life correlates with LOSING. Do not spend early tempo just to poke a life off.</p><p><b>first_life_dealer_overall_wr:</b> 45.2</p><p><b>n:</b> 812</p><p><b>n_games_no_first_life_taken:</b> 1</p><p><b>detail:</b> </p><ul><li>When the FIRST seat deals first life (happens in 568/812 = 70% of games, almost always on their own-turn 2), the first seat wins only 44.0% — the receiver (second seat) wins 56.0%.</li><li>When the SECOND seat deals first life (n=244), the second seat wins 48.0% — the receiver (first seat) wins 52.0%.</li><li>First life is dealt on the dealer&#x27;s own-turn 2 in 494/812 games (median own-turn 2, mean 2.92). It is an opening-tempo poke into an empty board.</li><li>Early aggression is anti-predictive: in the 546 games with an early-life lead, the player ahead on life through own-turns 1-4 won only 42.9% (234/546). Life taken in own-turns 1-4 is actually slightly HIGHER for the eventual loser (mean 0.75) than the winner (mean 0.64).</li></ul><p><b>mechanism:</b> A turn-2 leader swing for 1 life trades your DON/tempo and (because of Nami&#x27;s draw-on-life-loss) hands the opponent a fresh card. Against a mirror that defends with +2000 and recurs life to hand, one early life means little and the tempo you spent could have developed your board. The opponent answers by building, and out-develops you.</p><p><b>practical:</b> In the early game (your turns 1-4) prioritize DEVELOPING your board and engine over poking the opposing leader. Take a free life only when it costs you nothing (e.g. an attack that would otherwise do nothing). Do not rest DON or commit a swing solely to deal early life.</p>
+<h3 style="color:#f2c94c;font-size:15px;margin:12px 0 2px">How The Winner Actually Wins</h3>
+<p><b>summary:</b> The winner out-DEVELOPS and out-DRAWS, then converts a wider board into a late-game life burst. The leader, the +2000 buff, and life recursion are near-identical between winner and loser — they are table stakes, not the differentiator.</p><p><b>differentiators_winner_vs_loser:</b> </p><p><b>character_attacks_per_game:</b> </p><p><b>winner_mean:</b> 10.71</p><p><b>winner_median:</b> 10</p><p><b>loser_mean:</b> 8.26</p><p><b>loser_median:</b> 8</p><p><b>n:</b> 813</p><p><b>read:</b> +2.45 character attacks/game. THE single biggest behavioral gap. Winners attack with their BOARD, not just the leader.</p><p><b>engine_draws_per_game:</b> </p><p><b>winner_mean:</b> 7.99</p><p><b>winner_median:</b> 8</p><p><b>loser_mean:</b> 6.68</p><p><b>loser_median:</b> 7</p><p><b>n:</b> 813</p><p><b>read:</b> +1.3 extra engine draws. Winners keep the card engine (life-to-hand, on-attack draws) flowing wider.</p><p><b>life_cards_taken_total:</b> </p><p><b>winner_median:</b> 5</p><p><b>winner_mean:</b> 5.25</p><p><b>loser_median:</b> 3</p><p><b>loser_mean:</b> 3.34</p><p><b>n:</b> 813</p><p><b>read:</b> Winners take ~5 life over the game vs ~3 — but this lead is built LATE (see life-burst), not early.</p><p><b>whitebeard_OP13-042_deployed:</b> </p><p><b>winner_pct:</b> 88.8</p><p><b>loser_pct:</b> 79.3</p><p><b>n:</b> 813</p><p><b>read:</b> The 10-cost 12000 finisher (Edward Newgate SP) lands for the winner 88.8% of games vs 79.3% for the loser. Getting your big body down is a winning-side signature.</p><p><b>non_differentiators_essentially_a_wash:</b> </p><p><b>leader_attacks_per_game:</b> </p><p><b>winner_mean:</b> 6.83</p><p><b>loser_mean:</b> 6.79</p><p><b>n:</b> 813</p><p><b>plus2000_buff_uses_per_game:</b> </p><p><b>winner_mean:</b> 4.99</p><p><b>loser_mean:</b> 5.12</p><p><b>n:</b> 813</p><p><b>winner_used_more_in_games:</b> 318</p><p><b>loser_used_more_in_games:</b> 329</p><p><b>equal:</b> 166</p><p><b>read:</b> Buff usage is a coin-flip between winner and loser — BOTH players buff ~5x. Buffing is mandatory survival, not an edge.</p><p><b>life_to_hand_effect_uses:</b> </p><p><b>winner_mean:</b> 0.81</p><p><b>loser_mean:</b> 0.87</p><p><b>n:</b> 813</p><p><b>add_life_from_deck_uses:</b> </p><p><b>winner_mean:</b> 3.8</p><p><b>loser_mean:</b> 4.0</p><p><b>n:</b> 813</p><p><b>counters_played:</b> </p><p><b>winner_mean:</b> 7.6</p><p><b>loser_mean:</b> 8.15</p><p><b>n:</b> 813</p><p><b>read:</b> The LOSER plays MORE counters (8.15 vs 7.6) and spends more counter value (12162 vs 11268 total; n=813), and spends more counter value early (own-turns 1-5: loser 1303 vs winner 1170). The loser is on the back foot defending; the winner is dictating.</p>
+<h3 style="color:#f2c94c;font-size:15px;margin:12px 0 2px">The Life Burst</h3>
+<p><b>claim:</b> The mirror is decided from own-turn 9 onward. Through turn 8 both players take life at the same rate; from turn 9 the winner&#x27;s life-taking nearly doubles the loser&#x27;s.</p><p><b>life_taken_per_own_turn:</b> </p><p><b>metric:</b> average life cards taken (damage&gt;=1 leader/character hits) per own-turn</p><p><b>winner:</b> </p><p><b>T2:</b> 0.28</p><p><b>T3:</b> 0.13</p><p><b>T4:</b> 0.23</p><p><b>T5:</b> 0.15</p><p><b>T6:</b> 0.13</p><p><b>T7:</b> 0.3</p><p><b>T8:</b> 0.28</p><p><b>T9:</b> 0.47</p><p><b>T10:</b> 0.42</p><p><b>T11:</b> 0.44</p><p><b>loser:</b> </p><p><b>T2:</b> 0.33</p><p><b>T3:</b> 0.12</p><p><b>T4:</b> 0.3</p><p><b>T5:</b> 0.11</p><p><b>T6:</b> 0.15</p><p><b>T7:</b> 0.23</p><p><b>T8:</b> 0.26</p><p><b>T9:</b> 0.3</p><p><b>T10:</b> 0.24</p><p><b>T11:</b> 0.22</p><p><b>n_per_turn:</b> 755-813 through T11</p><p><b>read:</b> Identical (and if anything the eventual loser takes slightly more) through T8. At T9 the winner jumps to 0.47/turn while the loser stays at 0.30, and the gap holds (T10 0.42 vs 0.24, T11 0.44 vs 0.22). Plan to convert your board into a sustained life push around turns 9-11, after you&#x27;ve out-developed.</p><p><b>endgame:</b> </p><p><b>winner_final_life:</b> </p><p><b>mean:</b> 2.09</p><p><b>median:</b> 2</p><p><b>dist:</b> </p><p><b>0:</b> 38</p><p><b>1:</b> 207</p><p><b>2:</b> 302</p><p><b>3:</b> 190</p><p><b>4:</b> 64</p><p><b>5:</b> 11</p><p><b>6:</b> 1</p><p><b>n:</b> 813</p><p><b>read:</b> Winners close while still holding ~2 life (median 2). You do NOT need to be ahead on life to win — 38 winners closed from 0 life. Survival + board is enough.</p><p><b>loser_final_life_median:</b> 1</p><p><b>concede_timing:</b> </p><p><b>n:</b> 556</p><p><b>loser_life_median_at_concede:</b> 1</p><p><b>dist:</b> </p><p><b>0:</b> 143</p><p><b>1:</b> 202</p><p><b>2:</b> 128</p><p><b>3:</b> 71</p><p><b>4:</b> 9</p><p><b>5:</b> 1</p><p><b>6:</b> 2</p><p><b>read:</b> 61% of decisive mirrors end in concede; the loser concedes at 0-1 life in 345/556 cases, but 128 conceded at 2 life and 71 at 3 — players concede the mirror once the board/engine is clearly lost, before lethal. Keep developing pressure even when life is even; a dominant board forces the concede.</p>
+<h3 style="color:#f2c94c;font-size:15px;margin:12px 0 2px">First Actions Timing</h3>
+<p><b>first_deploy_own_turn:</b> </p><p><b>winner_median:</b> 3</p><p><b>winner_mean:</b> 3.02</p><p><b>loser_median:</b> 3</p><p><b>loser_mean:</b> 3.3</p><p><b>n:</b> ~810</p><p><b>read:</b> First body lands around own-turn 3 for both; winners are marginally earlier.</p><p><b>first_leader_attack_own_turn:</b> </p><p><b>winner_median:</b> 3</p><p><b>winner_mean:</b> 2.8</p><p><b>loser_median:</b> 2</p><p><b>loser_mean:</b> 2.7</p><p><b>n:</b> ~810</p><p><b>read:</b> Winners&#x27; first LEADER swing is slightly LATER (median own-turn 3) than losers&#x27; (median own-turn 2) — consistent with the first-life trap: rushing the leader in early is a loser tendency.</p><p><b>first_plus2000_buff_own_turn:</b> </p><p><b>winner_median:</b> 4</p><p><b>winner_mean:</b> 4.0</p><p><b>loser_median:</b> 3</p><p><b>loser_mean:</b> 3.82</p><p><b>n:</b> ~805</p><p><b>read:</b> Winners first trigger their +2000 buff around own-turn 4 (i.e. they get attacked slightly later because they aren&#x27;t poking first), losers around turn 3.</p>
+<h3 style="color:#f2c94c;font-size:15px;margin:12px 0 2px">Step By Step Plan</h3>
+<ul><li><p><b>phase:</b> Pre-game / die roll</p><p><b>step:</b> Choose to go SECOND.</p><p><b>stat:</b> Second seat wins 53.6% (436/813); the edge is 60.1% in long (&gt;=17-ply) games (n=278). Going first you are at 46.4%.</p></li><li><p><b>phase:</b> Mulligan</p><p><b>step:</b> Keep hands that develop a board and run the engine over hands that only enable an early leader poke. You want bodies + your draw/recursion pieces (EB03-055 Nico Robin at 99.2% inclusion, EB03-053 Nami at 97.5%, OP11-106 Zeus 95.8%, EB04-058 Borsalino 89.1% are near-universal staples).</p><p><b>stat:</b> Winners out-draw losers 8.0 vs 6.7 engine draws/game and out-attack with characters 10.7 vs 8.3 (n=813). The engine + board, not the leader, win the mirror.</p></li><li><p><b>phase:</b> Own-turns 1-4 (early)</p><p><b>step:</b> DEVELOP. Drop bodies (first body around own-turn 3) and grow your engine. Do NOT spend DON or a swing just to deal first life into an empty board.</p><p><b>stat:</b> First-life dealer wins only 45.2% (n=812); early-life leader wins only 42.9% (n=546). Losers deal slightly more early life (T1-4 mean 0.75 vs winners 0.64) and play more early counter value (1303 vs 1170 in T1-5).</p></li><li><p><b>phase:</b> Own-turns 1-4 (defense)</p><p><b>step:</b> Bank your counters. Don&#x27;t over-defend the early pokes — take a poke or two and save counter cards (OP11-106 Zeus = 2000 counter, OP12-112 Baby 5 = 2000, EB04-058/EB03-053 = 1000 counter) for the turns that actually matter.</p><p><b>stat:</b> The LOSER plays more counters over the game (8.15 vs 7.6) and more total counter value (12162 vs 11268, n=813). Out-spending counters early is a losing pattern; the winner is the one dictating, not reacting.</p></li><li><p><b>phase:</b> Own-turns 5-7 (mid)</p><p><b>step:</b> WIN THE BOARD. This is where the board gap is widest — get to 2-3 characters that stick and start swinging with the board, not just the leader. Keep your own life topped via life-to-hand / add-to-life recursion.</p><p><b>stat:</b> Winner board width T5 1.99 / T7 2.96 vs loser 1.71 / 2.72 (n&gt;=370). Winner life actually recovers T5 2.85 -&gt; T8 3.12. The +2000 buff is mandatory but NOT an edge (both buff ~5x; winner-more in only 318 games vs loser-more 329).</p></li><li><p><b>phase:</b> Own-turns 9-11 (close)</p><p><b>step:</b> BURST. Convert your wider board into a sustained multi-attack life push. Land your big finisher (OP13-042 Whitebeard SP, 10c/12000) — winners get it down 88.8% vs 79.3%. Force the opponent to spend their whole hand on counters.</p><p><b>stat:</b> Life-taken jumps at own-turn 9: winner 0.47/turn vs loser 0.30, holding through T11 (0.44 vs 0.22). Winners take ~5 life total vs losers ~3 (medians 5 vs 3).</p></li><li><p><b>phase:</b> Closing</p><p><b>step:</b> Don&#x27;t wait to be ahead on life to commit — a dominant board closes from even or behind. Push the moment the opponent is out of counters; many opponents concede at 2-3 life once the board is lost.</p><p><b>stat:</b> Winners close from a median of 2 life (38 won from 0). Losers concede at 0-1 life in 345/556 games, but 199 conceded at 2-3 life with the board lost.</p></li></ul>
+<h3 style="color:#f2c94c;font-size:15px;margin:12px 0 2px">Pivotal Decisions</h3>
+<ul><li><p><b>id:</b> 1</p><p><b>decision:</b> Take the second seat at the die roll.</p><p><b>stat:</b> 53.6% second-seat WR overall (n=813), 60.1% in long games (n=278). First-seat is only break-even (47.4%) in fast &lt;=12-ply games (n=116).</p><p><b>why:</b> Structural: second seat owns the last attack (423 vs 389 final-turn ownership) and draws turn 1. Engine output is otherwise identical between seats.</p></li><li><p><b>id:</b> 2</p><p><b>decision:</b> Do NOT spend tempo to deal first life. Develop instead.</p><p><b>stat:</b> First-life dealer wins 45.2% (n=812); early-life (T1-4) leader wins 42.9% (n=546). Dealing first life off the first seat -&gt; you win only 44.0%.</p><p><b>why:</b> An early poke trades your DON and gives the mirror a free card (draw-on-life-loss). The receiver out-develops and wins.</p></li><li><p><b>id:</b> 3</p><p><b>decision:</b> Attack with your BOARD, not just the leader. Build bodies that stick and swing every turn.</p><p><b>stat:</b> +2.45 character attacks/game for winners (10.71 vs 8.26, n=813) — the largest behavioral gap. Total deploy count is identical (~7), so the edge is bodies SURVIVING and re-attacking, not deploying more.</p><p><b>why:</b> Leader attacks are equal (6.83 vs 6.79). The character board is the entire difference in offensive output.</p></li><li><p><b>id:</b> 4</p><p><b>decision:</b> Keep the card engine running wider than your opponent.</p><p><b>stat:</b> +1.3 engine draws/game for winners (7.99 vs 6.68, n=813).</p><p><b>why:</b> More cards = more counters held AND more board, the two things that win the grind. The deck&#x27;s whole identity is the draw engine.</p></li><li><p><b>id:</b> 5</p><p><b>decision:</b> Bank counters early; don&#x27;t out-spend the opponent defending the early pokes.</p><p><b>stat:</b> Losers play MORE counters (8.15 vs 7.6) and more value (12162 vs 11268; and 1303 vs 1170 in T1-5). Winner spends LESS on defense.</p><p><b>why:</b> If you&#x27;re burning counters to stop turn-2 pokes you&#x27;re playing the loser&#x27;s game. Take the poke, save the card for the turn-9+ burst when it stops a lethal swing.</p></li><li><p><b>id:</b> 6</p><p><b>decision:</b> Time your life push for own-turn 9+, after winning the board (turns 5-7).</p><p><b>stat:</b> Through T8 both players take ~0.2-0.3 life/turn; at T9 winners jump to 0.47 vs 0.30 and hold (n&gt;=755).</p><p><b>why:</b> Life taken before T9 is non-predictive. The decisive damage is dealt late off an established board. Patience is the line.</p></li><li><p><b>id:</b> 7</p><p><b>decision:</b> Land your big finisher (OP13-042 Edward Newgate SP, 10c/12000).</p><p><b>stat:</b> Deployed by the winner in 88.8% of games vs 79.3% by the loser (n=813).</p><p><b>why:</b> A 12000 body that the opponent must double-block or eat is the cleanest way to force life through in the burst phase. 79% inclusion across mirror lists.</p></li><li><p><b>id:</b> 8</p><p><b>decision:</b> If forced to go FIRST, keep the game short and press a real life lead; don&#x27;t let it grind to turn 17+.</p><p><b>stat:</b> First seat is break-even in &lt;=12-ply games (second-WR 47.4%, n=116) but collapses to 39.9% (second-WR 60.1%) in &gt;=17-ply games (n=278).</p><p><b>why:</b> The second seat&#x27;s positional edge compounds with length. Your only first-seat path is a faster, more decisive game where your tempo matters.</p></li></ul>
+</div>
+<h2>③ The winning curve</h2><div class=box>
+<h3 style="color:#f2c94c;font-size:15px">Winning Line By Modal Wins</h3>
+<p><b>first:</b> </p><ul><li><p><b>turn:</b> 1</p><p><b>code:</b> OP15-052</p><p><b>name:</b> Leo</p><p><b>wins_with_deploy:</b> 8</p><p><b>of_win_games:</b> 1565</p><p><b>share_of_wins:</b> 0.0051</p></li><li><p><b>turn:</b> 2</p><p><b>code:</b> P-096</p><p><b>name:</b> Girl (OP14 Release Event)</p><p><b>wins_with_deploy:</b> 619</p><p><b>of_win_games:</b> 1557</p><p><b>share_of_wins:</b> 0.3976</p></li><li><p><b>turn:</b> 3</p><p><b>code:</b> EB03-053</p><p><b>name:</b> Nami (053)</p><p><b>wins_with_deploy:</b> 962</p><p><b>of_win_games:</b> 1548</p><p><b>share_of_wins:</b> 0.6214</p></li><li><p><b>turn:</b> 4</p><p><b>code:</b> EB03-055</p><p><b>name:</b> Nico Robin (055)</p><p><b>wins_with_deploy:</b> 721</p><p><b>of_win_games:</b> 1529</p><p><b>share_of_wins:</b> 0.4716</p></li><li><p><b>turn:</b> 5</p><p><b>code:</b> EB03-055</p><p><b>name:</b> Nico Robin (055)</p><p><b>wins_with_deploy:</b> 608</p><p><b>of_win_games:</b> 1489</p><p><b>share_of_wins:</b> 0.4083</p></li><li><p><b>turn:</b> 6</p><p><b>code:</b> OP13-042</p><p><b>name:</b> Edward.Newgate (SP)</p><p><b>wins_with_deploy:</b> 738</p><p><b>of_win_games:</b> 1348</p><p><b>share_of_wins:</b> 0.5475</p></li></ul><p><b>second:</b> </p><ul><li><p><b>turn:</b> 1</p><p><b>code:</b> P-096</p><p><b>name:</b> Girl (OP14 Release Event)</p><p><b>wins_with_deploy:</b> 518</p><p><b>of_win_games:</b> 1320</p><p><b>share_of_wins:</b> 0.3924</p></li><li><p><b>turn:</b> 2</p><p><b>code:</b> PRB02-008</p><p><b>name:</b> Marco (Alternate Art)</p><p><b>wins_with_deploy:</b> 239</p><p><b>of_win_games:</b> 1311</p><p><b>share_of_wins:</b> 0.1823</p></li><li><p><b>turn:</b> 3</p><p><b>code:</b> EB03-053</p><p><b>name:</b> Nami (053)</p><p><b>wins_with_deploy:</b> 787</p><p><b>of_win_games:</b> 1301</p><p><b>share_of_wins:</b> 0.6049</p></li><li><p><b>turn:</b> 4</p><p><b>code:</b> EB03-055</p><p><b>name:</b> Nico Robin (055)</p><p><b>wins_with_deploy:</b> 810</p><p><b>of_win_games:</b> 1273</p><p><b>share_of_wins:</b> 0.6363</p></li><li><p><b>turn:</b> 5</p><p><b>code:</b> OP13-042</p><p><b>name:</b> Edward.Newgate (SP)</p><p><b>wins_with_deploy:</b> 700</p><p><b>of_win_games:</b> 1229</p><p><b>share_of_wins:</b> 0.5696</p></li><li><p><b>turn:</b> 6</p><p><b>code:</b> OP13-042</p><p><b>name:</b> Edward.Newgate (SP)</p><p><b>wins_with_deploy:</b> 457</p><p><b>of_win_games:</b> 1041</p><p><b>share_of_wins:</b> 0.439</p></li></ul>
+</div>
+<h2>④ The list — counts + what the elite players run</h2>
+<table><tr><th>#</th><th>Card</th><th>Cost</th><th>top decks</th><th>elite 11 players</th></tr>
+<tr><td class=q>4x</td><td>Nico Robin (055) <small>EB03-055</small></td><td style=text-align:center>7</td><td style=text-align:center>99%</td><td style="background:#14401c;text-align:center">11/11</td></tr>
+<tr><td class=q>4x</td><td>Nami (053) <small>EB03-053</small></td><td style=text-align:center>5</td><td style=text-align:center>98%</td><td style="background:#14401c;text-align:center">11/11</td></tr>
+<tr><td class=q>4x</td><td>Zeus (SP) <small>OP11-106</small></td><td style=text-align:center>2</td><td style=text-align:center>96%</td><td style="background:#14401c;text-align:center">11/11</td></tr>
+<tr><td class=q>4x</td><td>Borsalino <small>EB04-058</small></td><td style=text-align:center>5</td><td style=text-align:center>89%</td><td style="background:#14401c;text-align:center">11/11</td></tr>
+<tr><td class=q>3x</td><td>Baby 5 (112) <small>OP12-112</small></td><td style=text-align:center>4</td><td style=text-align:center>82%</td><td style="background:#4a1414;text-align:center">4/11</td></tr>
+<tr><td class=q>3x</td><td>Edward.Newgate (SP) <small>OP13-042</small></td><td style=text-align:center>10</td><td style=text-align:center>79%</td><td style="background:#14401c;text-align:center">11/11</td></tr>
+<tr><td class=q>4x</td><td>Gecko Moria <small>OP14-104</small></td><td style=text-align:center>8</td><td style=text-align:center>78%</td><td style="background:#14401c;text-align:center">11/11</td></tr>
+<tr><td class=q>2x</td><td>Roronoa Zoro (OP15-113) <small>OP15-113</small></td><td style=text-align:center>4</td><td style=text-align:center>76%</td><td style="background:#14401c;text-align:center">11/11</td></tr>
+<tr><td class=q>4x</td><td>Kumacy <small>OP14-102</small></td><td style=text-align:center>1</td><td style=text-align:center>75%</td><td style="background:#4a1414;text-align:center">1/11</td></tr>
+<tr><td class=q>4x</td><td>Girl (OP14 Release Event) <small>P-096</small></td><td style=text-align:center>2</td><td style=text-align:center>74%</td><td style="background:#14401c;text-align:center">10/11</td></tr>
+<tr><td class=q>4x</td><td>Dr. Hogback <small>OP14-110</small></td><td style=text-align:center>4</td><td style=text-align:center>72%</td><td style="background:#14401c;text-align:center">9/11</td></tr>
+<tr><td class=q>4x</td><td>Perona <small>OP14-111</small></td><td style=text-align:center>4</td><td style=text-align:center>72%</td><td style="background:#14401c;text-align:center">10/11</td></tr>
+<tr><td class=q>1x</td><td>Sanji (OP15-047) <small>OP15-047</small></td><td style=text-align:center>3</td><td style=text-align:center>67%</td><td style="background:#3a3320;text-align:center">5/11</td></tr>
+<tr><td class=q>3x</td><td>Kikunojo (Reprint) <small>OP06-104</small></td><td style=text-align:center>4</td><td style=text-align:center>64%</td><td style="background:#3a3320;text-align:center">8/11</td></tr>
+<tr><td class=q>4x</td><td>Marshall D. Teach <small>OP16-119</small></td><td style=text-align:center>8</td><td style=text-align:center>56%</td><td style="background:#4a1414;text-align:center">0/11</td></tr>
+</table>
+<div class=box><b>Switch guide (avg list → elite 11 players ≥60% WR):</b><ul><li class=up>＋ Silvers Rayleigh (OP14-108) — run by all/most elite, under-played in the netdeck</li><li class=up>＋ Marco (PRB02-008) — elite tech</li><li class=dn>－ trim Kumacy (OP14-102) / Baby 5 (OP12-112) — elite barely run the vanillas</li></ul><small>List counts from consensus of 119 competitive decks; elite column = how many of the 11 players (≥25 games, ≥60% WR) deploy it. Deploy-based under-counts 8-cost Teach (OP16-119) — it is in the deck 4x.</small></div>
+<h3 style="color:#f2c94c;font-size:15px">Flex slots</h3><p><b>description:</b> The contested slots in the 50 below the locked 4-of core. The core 11 four-ofs (Teach, Robin EB03-055, Nami EB03-053, Zeus, Baby5, Borsalino, Girl, Moria, Hogback, Perona, Kumacy) are non-negotiable (inc 66-100%).</p><p><b>slots:</b> </p><ul><li><p><b>code:</b> OP13-042</p><p><b>name:</b> Edward.Newgate (SP)</p><p><b>qty_in_list:</b> 3</p><p><b>note:</b> Runs 2-4; 10-cost double-blocker finisher. Cut to 2-3 if curve too top-heavy.</p></li><li><p><b>code:</b> OP15-113</p><p><b>name:</b> Roronoa Zoro (OP15-113)</p><p><b>qty_in_list:</b> 2</p><p><b>note:</b> Runs 1-4 (mode 2). Card-selection 6k body; flex 1-3.</p></li><li><p><b>code:</b> OP15-047</p><p><b>name:</b> Sanji (OP15-047)</p><p><b>qty_in_list:</b> 1</p><p><b>note:</b> 3-cost blocker. Mode is 1 but 30/171 lists run 2. The single most contested slot.</p></li></ul>
+<h3 style="color:#f2c94c;font-size:15px">Highest-WR tech</h3><ul><li><p><b>code:</b> OP16-116</p><p><b>name:</b> ZEHAHAHAHA</p><p><b>cost:</b> 8</p><p><b>category:</b> Event</p><p><b>inclusion_pct:</b> 41.2</p><p><b>incl_WR_pct:</b> 54.0</p><p><b>n_games:</b> 63</p><p><b>verdict:</b> HIGHEST-IMPACT TECH. 2nd Blackbeard piece. 1x maindeck baseline; lists run 2-4. Cohort with BB beats no-BB 51.6% vs 38.3%.</p></li><li><p><b>code:</b> EB03-060</p><p><b>name:</b> Will You Be My Servant?</p><p><b>cost:</b> 1</p><p><b>category:</b> Event</p><p><b>inclusion_pct:</b> 34.6</p><p><b>incl_WR_pct:</b> 55.1</p><p><b>n_games:</b> 69</p><p><b>verdict:</b> Highest-WR meaningful-n flex. 1-cost Nami dig event. Strong 2-3x add if cutting a blocker.</p></li><li><p><b>code:</b> OP03-048</p><p><b>name:</b> Nojiko (Reprint)</p><p><b>cost:</b> 2</p><p><b>category:</b> Character</p><p><b>inclusion_pct:</b> 17.6</p><p><b>incl_WR_pct:</b> 58.1</p><p><b>n_games:</b> 31</p><p><b>verdict:</b> Bounce tech (return opp cost&lt;=? char). 58% over n=31 — promising but thinner.</p></li><li><p><b>code:</b> OP16-104</p><p><b>name:</b> Catarina Devon</p><p><b>cost:</b> 4</p><p><b>category:</b> Character</p><p><b>inclusion_pct:</b> 12.4</p><p><b>incl_WR_pct:</b> 60.0</p><p><b>n_games:</b> 20</p><p><b>verdict:</b> Highest raw WR (60%) but THIN (n=20). 4-of in the lists that run it. Watch-list, not core.</p></li><li><p><b>code:</b> OP15-114</p><p><b>name:</b> Wyper</p><p><b>cost:</b> 5</p><p><b>category:</b> Character</p><p><b>inclusion_pct:</b> 20.9</p><p><b>incl_WR_pct:</b> 51.1</p><p><b>n_games:</b> 45</p><p><b>verdict:</b> Life-manip 6k body, 51% n=45. Marginal-positive flex.</p></li><li><p><b>code:</b> OP14-108</p><p><b>name:</b> Silvers Rayleigh</p><p><b>cost:</b> 6</p><p><b>category:</b> Character</p><p><b>inclusion_pct:</b> 31.4</p><p><b>incl_WR_pct:</b> 44.9</p><p><b>n_games:</b> 98</p><p><b>verdict:</b> Common removal piece but 44.9% incl-WR over n=98 underperforms. Cuttable.</p></li><li><p><b>code:</b> OP06-104</p><p><b>name:</b> Kikunojo (Reprint)</p><p><b>cost:</b> 4</p><p><b>category:</b> Character</p><p><b>inclusion_pct:</b> 45.8</p><p><b>incl_WR_pct:</b> 42.3</p><p><b>n_games:</b> 130</p><p><b>verdict:</b> Popular (46%) but LOW incl-WR 42.3% over big n=130. Left OUT of canonical 50 on WR grounds despite consensus.</p></li></ul>
+<hr><small>Source: 3,940 decisive OP16 ranked Nami games (parsed/nami_fresh.jsonl). Built 2026-06-06. Numbers recomputed decisive-only.</small>
